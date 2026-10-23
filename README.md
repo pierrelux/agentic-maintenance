@@ -6,7 +6,7 @@ the same ramp on the historian. Telling them apart takes an action on the plant:
 step, which costs production. This repository simulates that situation and asks a decision
 question: when is a test worth its cost?
 
-**Page (in French), with replayable agent runs:** https://pierrelux.github.io/agentic-maintenance/
+**Page (in French), with replayable agent runs:** https://pierrelucbacon.com/agentic-maintenance/
 
 The plant runs on NASA's [ProgPy](https://nasa.github.io/progpy/) centrifugal pump model. Agents
 see what a reliability engineer sees (historian telemetry, an OEM manual, the site's
