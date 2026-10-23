@@ -1,0 +1,9 @@
+[project]
+name = "maintsim"
+version = "0.1.0"
+description = "Simulated pump-alarm diagnosis test bed for agentic predictive maintenance (ProgPy physics, MCP tools)"
+requires-python = ">=3.10,<3.13"
+dependencies = ["progpy==1.7.1", "numpy", "mcp[cli]"]
+
+[tool.setuptools]
+packages = ["maintsim"]

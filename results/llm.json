@@ -1,0 +1,828 @@
+{
+ "costs": {
+  "action": {
+   "replace_bearing": 28000.0,
+   "replace_rtd": 1500.0,
+   "clean_cooler": 6000.0,
+   "monitor": 0.0
+  },
+  "unaddressed": {
+   "bearing_wear": 261000.0,
+   "cooler_fouling": 174000.0,
+   "rtd_drift": 12000.0,
+   "ambient": 0.0
+  },
+  "inspection": 1800.0,
+  "inspection_delay_h": 8.0,
+  "delay_per_h": 150.0
+ },
+ "prior": {
+  "bearing_wear": 0.3,
+  "rtd_drift": 0.3,
+  "cooler_fouling": 0.15,
+  "ambient": 0.25
+ },
+ "rows": [
+  {
+   "id": "ep05001",
+   "true": "bearing_wear",
+   "seed": 5001,
+   "alarm_at": "2026-10-16 10:44",
+   "policies": {
+    "replace": {
+     "action": "replace_bearing",
+     "correct": true,
+     "total": 28000,
+     "by_kind": {
+      "action": 28000.0
+     },
+     "tools": [
+      "get_alarm",
+      "submit_work_order"
+     ],
+     "seconds": 0.0
+    },
+    "inspect": {
+     "action": "replace_bearing",
+     "correct": true,
+     "total": 31000,
+     "by_kind": {
+      "inspection": 1800.0,
+      "delay": 1200.0,
+      "action": 28000.0
+     },
+     "tools": [
+      "get_alarm",
+      "request_inspection",
+      "submit_work_order"
+     ],
+     "seconds": 1.1
+    },
+    "rules": {
+     "action": "replace_bearing",
+     "correct": true,
+     "total": 31000,
+     "by_kind": {
+      "inspection": 1800.0,
+      "delay": 1200.0,
+      "action": 28000.0
+     },
+     "tools": [
+      "get_alarm",
+      "get_telemetry",
+      "request_inspection",
+      "submit_work_order"
+     ],
+     "seconds": 1.0
+    },
+    "voi": {
+     "action": "replace_bearing",
+     "correct": true,
+     "total": 30912,
+     "by_kind": {
+      "test": 2762.05,
+      "delay": 150.0,
+      "action": 28000.0
+     },
+     "tools": [
+      "get_alarm",
+      "get_telemetry",
+      "run_speed_step_test",
+      "submit_work_order"
+     ],
+     "seconds": 1.6,
+     "belief_log": [
+      {
+       "step": "history",
+       "probs": {
+        "bearing_wear": 0.6344656448594921,
+        "rtd_drift": 0.365534355140508,
+        "cooler_fouling": 0.0,
+        "ambient": 0.0
+       }
+      },
+      {
+       "step": "('speed_step', 0.85, 60)",
+       "probs": {
+        "bearing_wear": 1.0,
+        "rtd_drift": 8.074584986094633e-200,
+        "cooler_fouling": 0.0,
+        "ambient": 0.0
+       }
+      }
+     ]
+    },
+    "oracle": {
+     "action": "replace_bearing",
+     "correct": true,
+     "total": 28000,
+     "by_kind": {
+      "action": 28000.0
+     },
+     "tools": [
+      "submit_work_order"
+     ],
+     "seconds": 0.0
+    }
+   }
+  },
+  {
+   "id": "ep05002",
+   "true": "rtd_drift",
+   "seed": 5002,
+   "alarm_at": "2026-10-16 09:26",
+   "policies": {
+    "replace": {
+     "action": "replace_bearing",
+     "correct": false,
+     "total": 40000,
+     "by_kind": {
+      "action": 28000.0,
+      "consequence": 12000.0
+     },
+     "tools": [
+      "get_alarm",
+      "submit_work_order"
+     ],
+     "seconds": 0.0
+    },
+    "inspect": {
+     "action": "replace_rtd",
+     "correct": true,
+     "total": 4500,
+     "by_kind": {
+      "inspection": 1800.0,
+      "delay": 1200.0,
+      "action": 1500.0
+     },
+     "tools": [
+      "get_alarm",
+      "request_inspection",
+      "submit_work_order"
+     ],
+     "seconds": 1.1
+    },
+    "rules": {
+     "action": "replace_rtd",
+     "correct": true,
+     "total": 4500,
+     "by_kind": {
+      "inspection": 1800.0,
+      "delay": 1200.0,
+      "action": 1500.0
+     },
+     "tools": [
+      "get_alarm",
+      "get_telemetry",
+      "request_inspection",
+      "submit_work_order"
+     ],
+     "seconds": 1.1
+    },
+    "voi": {
+     "action": "replace_rtd",
+     "correct": true,
+     "total": 1500,
+     "by_kind": {
+      "action": 1500.0
+     },
+     "tools": [
+      "get_alarm",
+      "get_telemetry",
+      "submit_work_order"
+     ],
+     "seconds": 1.4,
+     "belief_log": [
+      {
+       "step": "history",
+       "probs": {
+        "bearing_wear": 0.002275426956967174,
+        "rtd_drift": 0.9977245730430327,
+        "cooler_fouling": 0.0,
+        "ambient": 0.0
+       }
+      }
+     ]
+    },
+    "oracle": {
+     "action": "replace_rtd",
+     "correct": true,
+     "total": 1500,
+     "by_kind": {
+      "action": 1500.0
+     },
+     "tools": [
+      "submit_work_order"
+     ],
+     "seconds": 0.0
+    }
+   }
+  },
+  {
+   "id": "ep05003",
+   "true": "rtd_drift",
+   "seed": 5003,
+   "alarm_at": "2026-10-14 13:31",
+   "policies": {
+    "replace": {
+     "action": "replace_bearing",
+     "correct": false,
+     "total": 40000,
+     "by_kind": {
+      "action": 28000.0,
+      "consequence": 12000.0
+     },
+     "tools": [
+      "get_alarm",
+      "submit_work_order"
+     ],
+     "seconds": 0.0
+    },
+    "inspect": {
+     "action": "replace_rtd",
+     "correct": true,
+     "total": 4500,
+     "by_kind": {
+      "inspection": 1800.0,
+      "delay": 1200.0,
+      "action": 1500.0
+     },
+     "tools": [
+      "get_alarm",
+      "request_inspection",
+      "submit_work_order"
+     ],
+     "seconds": 1.1
+    },
+    "rules": {
+     "action": "replace_rtd",
+     "correct": true,
+     "total": 4500,
+     "by_kind": {
+      "inspection": 1800.0,
+      "delay": 1200.0,
+      "action": 1500.0
+     },
+     "tools": [
+      "get_alarm",
+      "get_telemetry",
+      "request_inspection",
+      "submit_work_order"
+     ],
+     "seconds": 1.1
+    },
+    "voi": {
+     "action": "replace_rtd",
+     "correct": true,
+     "total": 2956,
+     "by_kind": {
+      "test": 1343.92,
+      "delay": 112.5,
+      "action": 1500.0
+     },
+     "tools": [
+      "get_alarm",
+      "get_telemetry",
+      "run_speed_step_test",
+      "submit_work_order"
+     ],
+     "seconds": 1.7,
+     "belief_log": [
+      {
+       "step": "history",
+       "probs": {
+        "bearing_wear": 0.7365623023448398,
+        "rtd_drift": 0.2634376976551603,
+        "cooler_fouling": 0.0,
+        "ambient": 0.0
+       }
+      },
+      {
+       "step": "('speed_step', 0.9, 45)",
+       "probs": {
+        "bearing_wear": 4.312576018679165e-18,
+        "rtd_drift": 1.0,
+        "cooler_fouling": 0.0,
+        "ambient": 0.0
+       }
+      }
+     ]
+    },
+    "oracle": {
+     "action": "replace_rtd",
+     "correct": true,
+     "total": 1500,
+     "by_kind": {
+      "action": 1500.0
+     },
+     "tools": [
+      "submit_work_order"
+     ],
+     "seconds": 0.0
+    }
+   }
+  },
+  {
+   "id": "ep05004",
+   "true": "bearing_wear",
+   "seed": 5004,
+   "alarm_at": "2026-10-15 23:44",
+   "policies": {
+    "replace": {
+     "action": "replace_bearing",
+     "correct": true,
+     "total": 28000,
+     "by_kind": {
+      "action": 28000.0
+     },
+     "tools": [
+      "get_alarm",
+      "submit_work_order"
+     ],
+     "seconds": 0.0
+    },
+    "inspect": {
+     "action": "replace_bearing",
+     "correct": true,
+     "total": 31000,
+     "by_kind": {
+      "inspection": 1800.0,
+      "delay": 1200.0,
+      "action": 28000.0
+     },
+     "tools": [
+      "get_alarm",
+      "request_inspection",
+      "submit_work_order"
+     ],
+     "seconds": 1.1
+    },
+    "rules": {
+     "action": "replace_bearing",
+     "correct": true,
+     "total": 31000,
+     "by_kind": {
+      "inspection": 1800.0,
+      "delay": 1200.0,
+      "action": 28000.0
+     },
+     "tools": [
+      "get_alarm",
+      "get_telemetry",
+      "request_inspection",
+      "submit_work_order"
+     ],
+     "seconds": 1.0
+    },
+    "voi": {
+     "action": "replace_bearing",
+     "correct": true,
+     "total": 29459,
+     "by_kind": {
+      "test": 1346.25,
+      "delay": 112.5,
+      "action": 28000.0
+     },
+     "tools": [
+      "get_alarm",
+      "get_telemetry",
+      "run_speed_step_test",
+      "submit_work_order"
+     ],
+     "seconds": 1.6,
+     "belief_log": [
+      {
+       "step": "history",
+       "probs": {
+        "bearing_wear": 0.8193466589777582,
+        "rtd_drift": 0.1806533410222419,
+        "cooler_fouling": 0.0,
+        "ambient": 0.0
+       }
+      },
+      {
+       "step": "('speed_step', 0.9, 45)",
+       "probs": {
+        "bearing_wear": 1.0,
+        "rtd_drift": 3.6967974227639675e-44,
+        "cooler_fouling": 0.0,
+        "ambient": 0.0
+       }
+      }
+     ]
+    },
+    "oracle": {
+     "action": "replace_bearing",
+     "correct": true,
+     "total": 28000,
+     "by_kind": {
+      "action": 28000.0
+     },
+     "tools": [
+      "submit_work_order"
+     ],
+     "seconds": 0.0
+    }
+   }
+  },
+  {
+   "id": "ep05005",
+   "true": "bearing_wear",
+   "seed": 5005,
+   "alarm_at": "2026-10-15 11:45",
+   "policies": {
+    "replace": {
+     "action": "replace_bearing",
+     "correct": true,
+     "total": 28000,
+     "by_kind": {
+      "action": 28000.0
+     },
+     "tools": [
+      "get_alarm",
+      "submit_work_order"
+     ],
+     "seconds": 0.0
+    },
+    "inspect": {
+     "action": "replace_bearing",
+     "correct": true,
+     "total": 31000,
+     "by_kind": {
+      "inspection": 1800.0,
+      "delay": 1200.0,
+      "action": 28000.0
+     },
+     "tools": [
+      "get_alarm",
+      "request_inspection",
+      "submit_work_order"
+     ],
+     "seconds": 1.1
+    },
+    "rules": {
+     "action": "replace_bearing",
+     "correct": true,
+     "total": 31000,
+     "by_kind": {
+      "inspection": 1800.0,
+      "delay": 1200.0,
+      "action": 28000.0
+     },
+     "tools": [
+      "get_alarm",
+      "get_telemetry",
+      "request_inspection",
+      "submit_work_order"
+     ],
+     "seconds": 1.2
+    },
+    "voi": {
+     "action": "replace_bearing",
+     "correct": true,
+     "total": 29463,
+     "by_kind": {
+      "test": 1350.63,
+      "delay": 112.5,
+      "action": 28000.0
+     },
+     "tools": [
+      "get_alarm",
+      "get_telemetry",
+      "run_speed_step_test",
+      "submit_work_order"
+     ],
+     "seconds": 1.6,
+     "belief_log": [
+      {
+       "step": "history",
+       "probs": {
+        "bearing_wear": 0.8279257064024809,
+        "rtd_drift": 0.17207429359751908,
+        "cooler_fouling": 0.0,
+        "ambient": 0.0
+       }
+      },
+      {
+       "step": "('speed_step', 0.9, 45)",
+       "probs": {
+        "bearing_wear": 1.0,
+        "rtd_drift": 1.0662784118945541e-17,
+        "cooler_fouling": 0.0,
+        "ambient": 0.0
+       }
+      }
+     ]
+    },
+    "oracle": {
+     "action": "replace_bearing",
+     "correct": true,
+     "total": 28000,
+     "by_kind": {
+      "action": 28000.0
+     },
+     "tools": [
+      "submit_work_order"
+     ],
+     "seconds": 0.0
+    }
+   }
+  },
+  {
+   "id": "ep05006",
+   "true": "ambient",
+   "seed": 5006,
+   "alarm_at": "2026-10-14 20:44",
+   "policies": {
+    "replace": {
+     "action": "replace_bearing",
+     "correct": false,
+     "total": 28000,
+     "by_kind": {
+      "action": 28000.0,
+      "consequence": 0.0
+     },
+     "tools": [
+      "get_alarm",
+      "submit_work_order"
+     ],
+     "seconds": 0.0
+    },
+    "inspect": {
+     "action": "replace_bearing",
+     "correct": false,
+     "total": 31000,
+     "by_kind": {
+      "inspection": 1800.0,
+      "delay": 1200.0,
+      "action": 28000.0,
+      "consequence": 0.0
+     },
+     "tools": [
+      "get_alarm",
+      "request_inspection",
+      "submit_work_order"
+     ],
+     "seconds": 1.1
+    },
+    "rules": {
+     "action": "monitor",
+     "correct": true,
+     "total": 0,
+     "by_kind": {
+      "action": 0.0
+     },
+     "tools": [
+      "get_alarm",
+      "get_telemetry",
+      "submit_work_order"
+     ],
+     "seconds": 0.0
+    },
+    "voi": {
+     "action": "monitor",
+     "correct": true,
+     "total": 3000,
+     "by_kind": {
+      "inspection": 1800.0,
+      "delay": 1200.0,
+      "action": 0.0
+     },
+     "tools": [
+      "get_alarm",
+      "get_telemetry",
+      "request_inspection",
+      "submit_work_order"
+     ],
+     "seconds": 2.7,
+     "belief_log": [
+      {
+       "step": "history",
+       "probs": {
+        "bearing_wear": 0.007393925424089238,
+        "rtd_drift": 0.0030460555067661826,
+        "cooler_fouling": 0.04396637044145582,
+        "ambient": 0.9455936486276886
+       }
+      },
+      {
+       "step": "('inspect', 'oil_cooler', None)",
+       "probs": {
+        "bearing_wear": 0.007694641382708178,
+        "rtd_drift": 0.00316994064885044,
+        "cooler_fouling": 0.005083834725314018,
+        "ambient": 0.9840515832431276
+       }
+      }
+     ]
+    },
+    "oracle": {
+     "action": "monitor",
+     "correct": true,
+     "total": 0,
+     "by_kind": {
+      "action": 0.0
+     },
+     "tools": [
+      "submit_work_order"
+     ],
+     "seconds": 0.0
+    }
+   }
+  },
+  {
+   "id": "ep05007",
+   "true": "ambient",
+   "seed": 5007,
+   "alarm_at": "2026-10-14 13:37",
+   "policies": {
+    "replace": {
+     "action": "replace_bearing",
+     "correct": false,
+     "total": 28000,
+     "by_kind": {
+      "action": 28000.0,
+      "consequence": 0.0
+     },
+     "tools": [
+      "get_alarm",
+      "submit_work_order"
+     ],
+     "seconds": 0.0
+    },
+    "inspect": {
+     "action": "replace_bearing",
+     "correct": false,
+     "total": 31000,
+     "by_kind": {
+      "inspection": 1800.0,
+      "delay": 1200.0,
+      "action": 28000.0,
+      "consequence": 0.0
+     },
+     "tools": [
+      "get_alarm",
+      "request_inspection",
+      "submit_work_order"
+     ],
+     "seconds": 1.1
+    },
+    "rules": {
+     "action": "monitor",
+     "correct": true,
+     "total": 0,
+     "by_kind": {
+      "action": 0.0
+     },
+     "tools": [
+      "get_alarm",
+      "get_telemetry",
+      "submit_work_order"
+     ],
+     "seconds": 0.0
+    },
+    "voi": {
+     "action": "monitor",
+     "correct": true,
+     "total": 0,
+     "by_kind": {
+      "action": 0.0
+     },
+     "tools": [
+      "get_alarm",
+      "get_telemetry",
+      "submit_work_order"
+     ],
+     "seconds": 1.4,
+     "belief_log": [
+      {
+       "step": "history",
+       "probs": {
+        "bearing_wear": 0.007531330884976658,
+        "rtd_drift": 0.003161506384561215,
+        "cooler_fouling": 0.006514642536077964,
+        "ambient": 0.9827925201943842
+       }
+      }
+     ]
+    },
+    "oracle": {
+     "action": "monitor",
+     "correct": true,
+     "total": 0,
+     "by_kind": {
+      "action": 0.0
+     },
+     "tools": [
+      "submit_work_order"
+     ],
+     "seconds": 0.0
+    }
+   }
+  },
+  {
+   "id": "ep05008",
+   "true": "rtd_drift",
+   "seed": 5008,
+   "alarm_at": "2026-10-14 13:36",
+   "policies": {
+    "replace": {
+     "action": "replace_bearing",
+     "correct": false,
+     "total": 40000,
+     "by_kind": {
+      "action": 28000.0,
+      "consequence": 12000.0
+     },
+     "tools": [
+      "get_alarm",
+      "submit_work_order"
+     ],
+     "seconds": 0.0
+    },
+    "inspect": {
+     "action": "replace_rtd",
+     "correct": true,
+     "total": 4500,
+     "by_kind": {
+      "inspection": 1800.0,
+      "delay": 1200.0,
+      "action": 1500.0
+     },
+     "tools": [
+      "get_alarm",
+      "request_inspection",
+      "submit_work_order"
+     ],
+     "seconds": 1.1
+    },
+    "rules": {
+     "action": "replace_rtd",
+     "correct": true,
+     "total": 4500,
+     "by_kind": {
+      "inspection": 1800.0,
+      "delay": 1200.0,
+      "action": 1500.0
+     },
+     "tools": [
+      "get_alarm",
+      "get_telemetry",
+      "request_inspection",
+      "submit_work_order"
+     ],
+     "seconds": 1.1
+    },
+    "voi": {
+     "action": "replace_rtd",
+     "correct": true,
+     "total": 2977,
+     "by_kind": {
+      "test": 1364.47,
+      "delay": 112.5,
+      "action": 1500.0
+     },
+     "tools": [
+      "get_alarm",
+      "get_telemetry",
+      "run_speed_step_test",
+      "submit_work_order"
+     ],
+     "seconds": 1.6,
+     "belief_log": [
+      {
+       "step": "history",
+       "probs": {
+        "bearing_wear": 0.17468431560501302,
+        "rtd_drift": 0.825315684394987,
+        "cooler_fouling": 0.0,
+        "ambient": 0.0
+       }
+      },
+      {
+       "step": "('speed_step', 0.9, 45)",
+       "probs": {
+        "bearing_wear": 2.0965902131046033e-42,
+        "rtd_drift": 1.0,
+        "cooler_fouling": 0.0,
+        "ambient": 0.0
+       }
+      }
+     ]
+    },
+    "oracle": {
+     "action": "replace_rtd",
+     "correct": true,
+     "total": 1500,
+     "by_kind": {
+      "action": 1500.0
+     },
+     "tools": [
+      "submit_work_order"
+     ],
+     "seconds": 0.0
+    }
+   }
+  }
+ ]
+}

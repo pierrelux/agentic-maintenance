@@ -1,0 +1,1274 @@
+<meta charset="utf-8">
+<title>Banc d'essai P-201</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: an aubergine cover band like the Mila 2026 title slides, then an operator's report in one
+   reading column (alarm, replay, test, work order) on Chalk. Colour stays reserved: the brand purple for
+   our agent and the accent, alarm red only for alarms, three validated hues for the data series. */
+:root {
+  --plane: #f9f0ed;          /* Chalk */
+  --surface: #fffcfb;
+  --ink: #1b1a1f;
+  --ink-2: #4b4552;
+  --muted: #857f8c;
+  --rule: #e6e1de;
+  --grid: #efe8e4;
+  --accent: #432355;         /* Aubergine */
+  --accent-soft: #ece3f1;    /* Lavender, light */
+  --alarm: #c93636;
+  --alarm-soft: #f8dede;
+  --warn: #a86b00;
+  --ok: #283e33;             /* Evergreen */
+  --s1: #7e569b;   /* Tt, purple */
+  --s2: #c0662f;   /* oil, copper */
+  --s3: #2f8a68;   /* ambient, jade */
+  --band: rgba(126, 86, 155, 0.13);
+  --band-2: rgba(133, 127, 140, 0.13);
+  --cover: #432355; --cover-ink: #f9f0ed; --cover-2: #d9cce3;
+  --f-display: "Plus Jakarta Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --f-body: "Atkinson Hyperlegible", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --plane: #141117; --surface: #1d1a21; --ink: #f3eeeb; --ink-2: #c9c1cc; --muted: #968e9c;
+    --rule: #2f2a35; --grid: #26222b; --accent: #c7b3d8; --accent-soft: #2e2338; --alarm: #ec7474;
+    --alarm-soft: #3a1d22; --warn: #e3a83a; --ok: #9ccbb4; --s1: #9c74c2; --s2: #c8703a; --s3: #3c9c78;
+    --band: rgba(156, 116, 194, 0.16); --band-2: rgba(150, 142, 156, 0.14); --cover: #2c1838; --cover-ink: #f9f0ed; --cover-2: #cdbbdb;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --plane: #141117; --surface: #1d1a21; --ink: #f3eeeb; --ink-2: #c9c1cc; --muted: #968e9c;
+  --rule: #2f2a35; --grid: #26222b; --accent: #c7b3d8; --accent-soft: #2e2338; --alarm: #ec7474;
+  --alarm-soft: #3a1d22; --warn: #e3a83a; --ok: #9ccbb4; --s1: #9c74c2; --s2: #c8703a; --s3: #3c9c78;
+  --band: rgba(156, 116, 194, 0.16); --band-2: rgba(150, 142, 156, 0.14); --cover: #2c1838; --cover-ink: #f9f0ed; --cover-2: #cdbbdb;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--plane); color: var(--ink); font-family: var(--f-body); font-size: 17px; line-height: 1.55;
+  margin: 0; padding-block: 0 64px;
+}
+.wrap { max-width: 892px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.col { max-width: 68ch; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; line-height: 1.12; margin: 0; }
+h1 { font-size: clamp(1.9rem, 4.6vw, 2.85rem); font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.01em; }
+h3 { font-size: 1.12rem; font-weight: 700; }
+p { margin: 0; }
+.mono { font-family: var(--f-mono); }
+.num { font-variant-numeric: tabular-nums; }
+.eyebrow { font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+section { display: grid; gap: 18px; padding-block: 44px 8px; border-top: 1px solid var(--rule); }
+section:first-of-type { border-top: 0; }
+.lede { font-size: 1.15rem; color: var(--ink-2); }
+.muted { color: var(--muted); }
+.small { font-size: 0.9rem; }
+a { color: var(--accent); }
+
+/* alarm summary row, as on an operator console */
+.alarm {
+  margin-top: 28px; display: flex; flex-wrap: wrap; gap: 6px 22px; align-items: center;
+  font-family: var(--f-mono); font-size: 0.92rem; padding: 10px 14px;
+  background: var(--alarm-soft); border-left: 4px solid var(--alarm); color: var(--ink);
+}
+.alarm .sev { color: var(--alarm); font-weight: 500; letter-spacing: 0.06em; }
+.alarm .blink { width: 9px; height: 9px; border-radius: 50%; background: var(--alarm); display: inline-block; margin-right: 8px; animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: 0.25; } }
+@media (prefers-reduced-motion: reduce) { .alarm .blink { animation: none; } }
+header.cover { background: var(--cover); color: var(--cover-ink); }
+header.cover .wrap { display: grid; gap: 16px; padding-block: 40px 34px; }
+header.cover .eyebrow { color: var(--cover-2); }
+header.cover h1 { color: var(--cover-ink); }
+header.cover .lede { color: var(--cover-2); }
+header.cover a { color: var(--cover-ink); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+header.cover .alarm { margin-top: 6px; background: rgba(236, 116, 116, 0.16); border-left-color: #ec7474; color: var(--cover-ink); }
+header.cover .alarm .sev { color: #ff9a9a; }
+header.cover .alarm .muted { color: var(--cover-2); }
+header.cover .alarm .blink { background: #ff8a8a; }
+.lead-block { padding-block: 22px 0; }
+
+.summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.summary > div { background: var(--surface); padding: 14px 16px 16px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.summary .eyebrow { color: var(--accent); }
+.summary .k { font-size: 0.95rem; color: var(--ink); }
+@media (max-width: 620px) { .summary { grid-template-columns: 1fr; } }
+
+/* tables */
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.94rem; }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-family: var(--f-mono); font-weight: 500; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+td.r, th.r { text-align: right; font-variant-numeric: tabular-nums; }
+tbody tr:hover { background: var(--surface); }
+tfoot th, tfoot td { border-bottom: 0; border-top: 2px solid var(--rule); font-size: 0.9rem; }
+.pill { font-family: var(--f-mono); font-size: 0.74rem; padding: 1px 7px; border: 1px solid currentColor; border-radius: 3px; white-space: nowrap; }
+.pill.ok { color: var(--ok); }
+.pill.ko { color: var(--alarm); }
+.pill.test { color: var(--accent); }
+.pill.tech { color: var(--warn); }
+
+/* chart frames */
+figure { margin: 0; }
+.fig { background: var(--surface); border: 1px solid var(--rule); padding: 14px 14px 10px; display: grid; gap: 8px; position: relative; }
+.fig figcaption { font-size: 0.86rem; color: var(--ink-2); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 0.85rem; color: var(--ink-2); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 18px; height: 3px; border-radius: 2px; display: inline-block; }
+.legend i.dot { width: 9px; height: 9px; border-radius: 50%; }
+.legend i.band { height: 10px; border-radius: 1px; }
+svg { display: block; width: 100%; height: auto; overflow: visible; }
+svg text { font-family: var(--f-mono); font-size: 11px; fill: var(--muted); }
+svg .lbl { fill: var(--ink-2); }
+svg .grid { stroke: var(--grid); stroke-width: 1; }
+svg .axis { stroke: var(--rule); stroke-width: 1; }
+svg .s1 { stroke: var(--s1); } svg .s2 { stroke: var(--s2); } svg .s3 { stroke: var(--s3); }
+svg .f1 { fill: var(--s1); } svg .f2 { fill: var(--s2); } svg .f3 { fill: var(--s3); }
+svg .line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+svg .limit { stroke: var(--alarm); stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; }
+svg .limit-t { fill: var(--alarm); }
+svg .band { fill: var(--band); } svg .band2 { fill: var(--band-2); }
+svg .obs { fill: var(--ink); stroke: var(--surface); stroke-width: 2; }
+svg .cross { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 3; }
+.tip {
+  position: absolute; pointer-events: none; background: var(--ink); color: var(--surface); font-family: var(--f-mono);
+  font-size: 0.78rem; padding: 6px 8px; line-height: 1.45; white-space: nowrap; z-index: 2; transform: translate(-50%, -110%);
+}
+.tip[hidden] { display: none; }
+
+/* the episode */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; counter-reset: s; }
+.steps li { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr) auto; gap: 4px 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); counter-increment: s; align-items: baseline; }
+.steps li::before { content: counter(s); font-family: var(--f-mono); color: var(--muted); font-size: 0.85rem; }
+.steps .what { min-width: 0; }
+.steps .what b { font-weight: 600; }
+.steps .tool { font-family: var(--f-mono); font-size: 0.78rem; color: var(--muted); display: block; }
+.steps .cost { font-family: var(--f-mono); font-size: 0.85rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+.two { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.two > div { align-content: start; }
+@media (max-width: 760px) { .two { grid-template-columns: 1fr; } }
+
+.belief { display: grid; gap: 10px; }
+.belief .stage { display: grid; gap: 4px; }
+.belief .row { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr) 3rem; gap: 8px; align-items: center; font-size: 0.86rem; }
+.belief .bar { height: 10px; background: var(--grid); position: relative; }
+.belief .bar > span { position: absolute; inset: 0 auto 0 0; background: var(--ink-2); border-radius: 0 3px 3px 0; }
+.belief .row.top .bar > span { background: var(--accent); }
+.belief .row .p { font-family: var(--f-mono); text-align: right; font-variant-numeric: tabular-nums; }
+
+/* work order, styled as the site form */
+.wo { background: var(--surface); border: 1px solid var(--rule); display: grid; }
+.wo .hd { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; padding: 10px 14px; border-bottom: 1px solid var(--rule); font-family: var(--f-mono); font-size: 0.8rem; color: var(--ink-2); }
+.wo .hd b { color: var(--ink); font-weight: 500; }
+.wo .bd { padding: 14px; display: grid; gap: 10px; }
+.wo .fld { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 10px; font-size: 0.95rem; }
+.wo .fld > span:first-child { font-family: var(--f-mono); font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); padding-top: 3px; }
+@media (max-width: 520px) { .wo .fld { grid-template-columns: 1fr; gap: 2px; } }
+
+/* cost controls */
+.controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; background: var(--surface); border: 1px solid var(--rule); padding: 14px; }
+@media (max-width: 620px) { .controls { grid-template-columns: 1fr; } }
+.controls label { display: grid; gap: 4px; font-size: 0.9rem; color: var(--ink-2); }
+.controls .val { font-family: var(--f-mono); color: var(--ink); font-variant-numeric: tabular-nums; }
+.controls .top { display: flex; justify-content: space-between; gap: 8px; }
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+input[type="range"]:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button.reset { justify-self: start; font: inherit; font-size: 0.85rem; background: none; border: 1px solid var(--rule); color: var(--ink-2); padding: 4px 10px; cursor: pointer; }
+button.reset:hover { border-color: var(--accent); color: var(--accent); }
+
+.bars { display: grid; gap: 8px; }
+.bars .b { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 4.8rem; gap: 10px; align-items: center; font-size: 0.9rem; }
+.bars .track { height: 18px; position: relative; }
+.bars .track > span { position: absolute; inset: 0 auto 0 0; background: var(--muted); border-radius: 0 4px 4px 0; min-width: 2px; transition: width 0.25s ease; }
+.bars .b.hl .track > span { background: var(--accent); }
+.bars .b.or .track > span { background: transparent; border: 1.5px dashed var(--ink-2); }
+.bars .v { font-family: var(--f-mono); text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 560px) { .bars .b { grid-template-columns: minmax(0, 1fr) 4.6rem; } .bars .track { grid-column: 1 / -1; grid-row: 2; } }
+@media (prefers-reduced-motion: reduce) { .bars .track > span { transition: none; } }
+
+.list { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+.list li { display: grid; gap: 2px; padding-left: 14px; border-left: 2px solid var(--rule); }
+.list li b { font-family: var(--f-display); font-weight: 600; font-size: 1.08rem; }
+.other { padding: 10px 12px; border-left: 3px solid var(--alarm); background: var(--surface); color: var(--ink-2); }
+.other b { color: var(--ink); }
+
+/* replay player */
+:root { --term-bg: #1c1422; --term-fg: #ece4ea; --term-dim: #9a8fa3; --term-acc: #c9b3dd; --term-warn: #f0b44c; --term-ok: #9fd3b9; --term-bad: #ff8f8f; --term-rule: #33283b; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --term-bg: #110c15; --term-rule: #2a2131; } }
+:root[data-theme="dark"] { --term-bg: #110c15; --term-rule: #2a2131; }
+.rp-bar { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: end; }
+.rp-field { display: grid; gap: 4px; font-size: 0.8rem; color: var(--muted); font-family: var(--f-mono); text-transform: uppercase; letter-spacing: 0.06em; }
+.rp-field select { font: inherit; font-family: var(--f-mono); text-transform: none; letter-spacing: 0; font-size: 0.9rem; color: var(--ink); background: var(--surface); border: 1px solid var(--rule); padding: 6px 8px; }
+.rp-ctl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-left: auto; }
+.btn { font: inherit; font-size: 0.88rem; color: var(--ink); background: var(--surface); border: 1px solid var(--rule); padding: 6px 12px; cursor: pointer; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); min-width: 6.5rem; }
+.seg { display: inline-flex; border: 1px solid var(--rule); background: var(--surface); }
+.seg button { font: inherit; font-size: 0.86rem; text-transform: none; letter-spacing: 0; color: var(--ink-2); background: none; border: 0; padding: 6px 11px; cursor: pointer; font-family: var(--f-body); }
+.seg button + button { border-left: 1px solid var(--rule); }
+.seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--ink); font-weight: 600; }
+.btn:focus-visible, .seg button:focus-visible, select:focus-visible, .term:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.rp { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+@media (max-width: 820px) { .rp { grid-template-columns: 1fr; } .plant { order: -1; } }
+.term { background: var(--term-bg); color: var(--term-fg); font-family: var(--f-mono); font-size: 0.78rem; line-height: 1.5; height: 560px; overflow-y: auto; padding: 12px 14px; border: 1px solid var(--term-rule); }
+@media (max-width: 820px) { .term { height: 440px; } }
+.term .hd { color: var(--term-dim); padding-bottom: 8px; margin-bottom: 8px; border-bottom: 1px dashed var(--term-rule); }
+.ent { padding: 6px 0 10px; border-bottom: 1px solid var(--term-rule); }
+.ent .ln { display: grid; grid-template-columns: 3.4rem 1rem minmax(0, 1fr); gap: 2px; }
+.ent .ts { color: var(--term-dim); }
+.ent .pr { color: var(--term-acc); }
+.ent .call { color: var(--term-fg); word-break: break-word; }
+.ent .call b { color: var(--term-acc); font-weight: 500; }
+.ent .out { margin: 6px 0 0 4.4rem; color: var(--term-dim); animation: fadein 0.35s ease both; min-width: 0; }
+@media (max-width: 520px) { .ent .ln { grid-template-columns: 3rem 0.9rem minmax(0, 1fr); } .ent .out { margin-left: 0.5rem; } }
+@keyframes fadein { from { opacity: 0; transform: translateY(3px); } }
+@media (prefers-reduced-motion: reduce) { .ent .out { animation: none; } }
+.out .scroll { overflow-x: auto; }
+.out table.tt { border-collapse: collapse; font-size: 0.74rem; width: auto; }
+.out table.tt th, .out table.tt td { border: 0; padding: 1px 10px 1px 0; color: var(--term-fg); text-transform: none; letter-spacing: 0; font-family: var(--f-mono); font-weight: 400; white-space: nowrap; }
+.out table.tt th { color: var(--term-dim); }
+.out table.tt tbody tr:hover { background: none; }
+.out .kv { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 0 10px; }
+.out .kv .k { color: var(--term-dim); }
+.out .kv .v { color: var(--term-fg); word-break: break-word; }
+.out .doc { white-space: pre-wrap; color: var(--term-fg); }
+.out .more { color: var(--term-dim); }
+.out .more button { font: inherit; color: var(--term-acc); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
+.out .charge { color: var(--term-warn); }
+.ent.calc .pr { color: var(--term-ok); }
+.ent.calc .call { color: var(--term-ok); }
+.out .probs { display: flex; flex-wrap: wrap; gap: 2px 14px; color: var(--term-fg); }
+.out .opt { display: grid; grid-template-columns: minmax(0, 1fr) 5.5rem 5rem 5.5rem; gap: 0 8px; }
+.out .opt span:not(:first-child) { text-align: right; }
+.out .opt.h { color: var(--term-dim); }
+.out .opt.pick { color: var(--term-ok); }
+.ent.end .call { color: var(--term-warn); }
+.ent.say { padding: 8px 0 10px; }
+.ent.say .ln { grid-template-columns: 3.4rem minmax(0, 1fr); }
+.ent.say .pr { display: none; }
+.ent .who { font-family: var(--f-body); font-size: 0.78rem; font-weight: 600; color: var(--term-ok); letter-spacing: 0.02em; }
+.ent .msg { margin: 4px 0 0 4.4rem; font-family: var(--f-body); font-size: 0.9rem; line-height: 1.5; color: var(--term-fg); white-space: pre-wrap; }
+.ent.final .msg { border-left: 2px solid var(--term-ok); padding-left: 10px; }
+@media (max-width: 520px) { .ent .msg { margin-left: 0.5rem; } .ent.say .ln { grid-template-columns: 3rem minmax(0, 1fr); } }
+.ent.side .pr, .ent.side .call { color: var(--term-warn); }
+.out.err .doc { color: var(--term-bad); }
+.out.bgnote .doc { color: var(--term-dim); font-style: italic; }
+.rawcmd { color: var(--term-fg); }
+.term details.prompt { margin: 2px 0 10px; color: var(--term-dim); }
+.term details.prompt summary { cursor: pointer; color: var(--term-acc); }
+.term details.prompt .doc { margin-top: 6px; color: var(--term-dim); white-space: pre-wrap; }
+
+.caret { display: inline-block; width: 0.55em; background: var(--term-acc); animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .caret { animation: none; } }
+.plant { background: var(--surface); border: 1px solid var(--rule); padding: 12px; display: grid; gap: 10px; min-width: 0; }
+.plant-hd { display: flex; justify-content: space-between; gap: 8px; font-family: var(--f-mono); font-size: 0.8rem; color: var(--ink-2); }
+.plant-hd .clock { color: var(--ink); font-variant-numeric: tabular-nums; }
+.state { font-family: var(--f-mono); font-size: 0.8rem; padding: 6px 10px; border-left: 3px solid var(--muted); background: var(--plane); color: var(--ink-2); }
+.state.alarm { border-color: var(--alarm); background: var(--alarm-soft); color: var(--ink); }
+.state.test { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); }
+.state.tech { border-color: var(--warn); color: var(--ink); }
+.state.done { border-color: var(--ok); color: var(--ink); }
+/* pump mimic (operator-console style schematic) */
+.pm { width: 100%; height: auto; display: block; color: var(--ink-2); font-family: var(--f-mono); }
+.pm .st { fill: var(--surface); stroke: currentColor; stroke-width: 1.2; }
+.pm .pipe { fill: none; stroke: var(--rule); stroke-width: 10; }
+.pm .pipe.thin { stroke-width: 5; }
+.pm .flow { fill: none; stroke-width: 2; stroke-dasharray: 5 7; stroke-linecap: round; }
+.pm .flow.proc { stroke: var(--ink-2); }
+.pm .flow.oil { stroke: var(--s2); stroke-dasharray: 3 5; }
+.pm .flow.cw { stroke: var(--muted); stroke-width: 1.6; stroke-dasharray: 3 5; }
+.pm .shaft { stroke: currentColor; stroke-width: 4; }
+.pm .brg { fill: currentColor; opacity: 0.5; }
+.pm .thrust-bg { fill: var(--surface); stroke: currentColor; stroke-width: 1.2; }
+.pm .thrust { fill: var(--alarm); }
+.pm .blade { fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; }
+.pm .hub { fill: currentColor; }
+.pm .tube { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+.pm .lead { fill: none; stroke: var(--muted); stroke-width: 1; }
+.pm .lbl { font-family: var(--f-body); font-size: 9.5px; fill: var(--muted); }
+.pm .tag .bx { fill: var(--surface); stroke: var(--rule); stroke-width: 1; }
+.pm .tag .sw { fill: var(--muted); }
+.pm .tag.tt .sw { fill: var(--s1); }
+.pm .tag.to .sw { fill: var(--s2); }
+.pm .tag.ta .sw { fill: var(--s3); }
+.pm .tag .tl { font-size: 7.5px; letter-spacing: 0.06em; fill: var(--muted); }
+.pm .tag .tv { font-size: 11px; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.pm .tag.hi .bx { stroke: var(--alarm); }
+.pm .tag.hi .tv { fill: var(--alarm); }
+.pm .tag.chg .bx { stroke: var(--accent); }
+.pm .tag.chg .tv { fill: var(--accent); }
+.pm .mk circle { fill: var(--accent); }
+.pm .mk text { fill: var(--plane); font-family: var(--f-body); font-size: 9px; font-weight: 700; text-anchor: middle; }
+.pm .ring { fill: none; stroke-width: 1.6; stroke-dasharray: 4 3; opacity: 0; transition: opacity 0.3s; }
+.pm .ring.on { opacity: 1; animation: pmPulse 1.3s ease-in-out infinite; }
+.pm .ring.test { stroke: var(--accent); }
+.pm .ring.tech { stroke: var(--warn); }
+.pm .ring.done { stroke: var(--ok); animation: none; }
+@keyframes pmPulse { 50% { opacity: 0.3; } }
+@media (prefers-reduced-motion: reduce) { .pm .ring.on { animation: none; } }
+.mech { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 400px); gap: 18px; align-items: start; }
+@media (max-width: 760px) { .mech { grid-template-columns: 1fr; } }
+.cnum { display: inline-grid; place-items: center; width: 1.25em; height: 1.25em; border-radius: 50%; background: var(--accent); color: var(--plane); font-size: 0.72rem; font-weight: 700; margin-right: 6px; vertical-align: 0.1em; }
+.ledger ul { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 3px; font-size: 0.84rem; color: var(--ink-2); }
+.ledger li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; animation: fadein 0.35s ease both; }
+.ledger li span:last-child { font-family: var(--f-mono); font-variant-numeric: tabular-nums; color: var(--ink); }
+.ledger .tot { display: flex; justify-content: space-between; border-top: 1px solid var(--rule); margin-top: 6px; padding-top: 6px; font-family: var(--f-mono); font-size: 0.9rem; }
+.ledger .empty { color: var(--muted); }
+.rp-result { background: var(--surface); border: 1px solid var(--rule); padding: 12px 14px; display: grid; gap: 6px; }
+.rp-result[hidden] { display: none; }
+.rp-result .row1 { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; }
+.rp-result .row1 b { font-family: var(--f-display); font-size: 1.2rem; font-weight: 600; }
+.rp-result.reveal { animation: fadein 0.5s ease both; }
+footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: 0.85rem; color: var(--muted); display: grid; gap: 6px; }
+</style>
+
+<header class="cover"><div class="wrap">
+  <div class="eyebrow">Note de travail · Université de Montréal et Mila · octobre 2026</div>
+  <h1>Diagnostic actif d'une alarme de pompe</h1>
+  <p class="lede col">Une alarme de température sur le roulement de butée d'une pompe de procédé peut avoir quatre causes, et chacune appelle une intervention différente. Le banc d'essai ci-dessous simule cette pompe avec le modèle de pompe centrifuge de <a href="https://nasa.github.io/progpy/">ProgPy</a>, la bibliothèque Python libre de la NASA pour le pronostic de pannes : des modèles physiques d'équipements dont l'usure progresse, et des outils pour estimer leur état et leur durée de vie restante. Ce modèle produit la télémétrie (températures des paliers et de l'huile, vitesse, débit) ; les pannes, la dérive de sonde, une perturbation de l'eau de refroidissement et le bruit de mesure sont ajoutés par-dessus. Le manuel du fabricant, la base de connaissances du site et le journal de maintenance ne viennent pas de ProgPy : ils sont synthétiques, rédigés pour ce banc d'essai. Un agent consulte ces quatre sources, comme le ferait un ingénieur de fiabilité, et peut payer pour des tests avant d'émettre un bon de travail.</p>
+  <div class="alarm" id="alarmRow"></div>
+</div></header>
+
+<div class="wrap">
+<div class="lead-block"><div class="summary" id="summary"></div></div>
+
+<section id="causes">
+  <div class="eyebrow">Le banc d'essai</div>
+  <h2>Une alarme, quatre causes</h2>
+  <p class="col">Chaque épisode tire une cause selon les fréquences de la base de connaissances du site. Les quatre sources se complètent : la télémétrie donne les signatures, le manuel les interprète, la base de connaissances donne les fréquences et les coûts, et le journal contient des indices utiles mais peu fiables.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Cause</th><th>Ce qu'on voit</th><th>Bonne action</th><th class="r">Si on la manque</th><th class="r">Fréquence</th></tr></thead>
+      <tbody id="causeRows"></tbody>
+    </table>
+  </div>
+  <div class="mech">
+  <p>Sur l'historique seul, l'usure et la dérive de sonde produisent la même rampe lisse sur la même lecture. L'usure ajoute de la chaleur de frottement, qui devrait aussi réchauffer un peu l'huile, mais cette hausse se perd dans les variations de l'eau de refroidissement, que l'historien ne mesure pas. Pour séparer les deux causes, il faut exciter le système. Un palier de vitesse à 90 % pendant 45 minutes coûte environ 1,4 k$ de débit perdu. La chaleur de frottement varie avec le carré de la vitesse, donc la butée d'un roulement usé baisse davantage pendant le palier ; le décalage d'une sonde ne dépend pas de la vitesse. C'est le problème du diagnostic actif : choisir une excitation qui rend les hypothèses distinguables, et ne la payer que si ce qu'elle apprend vaut plus que son coût (la valeur de l'information, ou VOI, au sens de Howard, 1966).</p>
+  <figure class="fig">
+    <div id="pumpFig"></div>
+    <figcaption>La pompe P-201 au moment de l'alarme 5001, avec les mesures de l'historien. Les numéros renvoient aux causes du tableau. La chaleur produite dans la butée passe à l'huile, puis à l'eau de refroidissement, dont ni le débit ni la température ne sont mesurés.</figcaption>
+  </figure>
+  </div>
+</section>
+
+<section id="replay">
+  <div class="eyebrow">Traces d'exécution</div>
+  <h2>Rejouer une enquête</h2>
+  <p class="col">Chaque enquête est rejouée à partir de son enregistrement : ce que l'agent a écrit, les commandes qu'il a lancées et ce que l'usine lui a répondu, dans l'ordre et avec les mêmes valeurs. Pour animer la pompe, le lecteur ré-exécute ces commandes sur la même alarme simulée, qui répond à l'identique. Les messages des modèles sont affichés tels quels, en anglais ; leur raisonnement interne n'est pas enregistré ici. Pour la politique VOI, les blocs « calcul » sont les sorties de son propre programme.</p>
+  <div class="rp-bar">
+    <label class="rp-field" for="rpAlarm"><span>Alarme</span><select id="rpAlarm"></select></label>
+    <div class="rp-field"><span>Agent</span><div class="seg" id="rpAgent" role="group" aria-label="Agent"></div></div>
+    <div class="rp-ctl">
+      <button type="button" class="btn primary" id="rpPlay">Lecture</button>
+      <button type="button" class="btn" id="rpStep">Étape suivante</button>
+      <button type="button" class="btn" id="rpRestart">Recommencer</button>
+      <div class="seg" id="rpSpeed" role="group" aria-label="Vitesse"></div>
+    </div>
+  </div>
+  <div class="rp">
+    <div class="term" id="rpTerm" tabindex="0" aria-label="Transcription des appels d'outils"></div>
+    <aside class="plant" aria-label="État de la pompe pendant l'enquête">
+      <div class="plant-hd"><span>P-201 · historien</span><span class="clock" id="rpClock"></span></div>
+      <div class="state" id="rpState"></div>
+      <div id="rpPump"></div>
+      <div id="rpTrend"></div>
+      <div class="ledger">
+        <div class="eyebrow">Coût engagé pendant l'enquête</div>
+        <ul id="rpLedger"></ul>
+        <div class="tot"><span>Total</span><span id="rpTotal" class="num"></span></div>
+      </div>
+    </aside>
+  </div>
+  <div class="rp-result" id="rpResult"></div>
+</section>
+
+<section id="episode">
+  <div class="eyebrow">Un épisode</div>
+  <h2 id="epTitle">Ce que le palier de vitesse a tranché</h2>
+  <p class="col" id="epIntro"></p>
+  <div class="two">
+    <div style="display:grid; gap:10px; min-width:0">
+      <figure class="fig" id="probeFig">
+        <div class="legend">
+          <span><i class="dot" style="background:var(--ink)"></i>Mesuré</span>
+          <span><i style="background:var(--s1)"></i>Prévu si usure</span>
+          <span><i style="background:var(--s2)"></i>Prévu si sonde décalée</span>
+        </div>
+        <div id="probe"></div>
+        <div class="tip" id="probeTip" hidden></div>
+        <figcaption>Baisse de Tt pendant le palier, par rapport au niveau d'avant le test (moyennes de 5 min).</figcaption>
+      </figure>
+      <div class="belief" id="belief"></div>
+    </div>
+    <div style="display:grid; gap:10px; min-width:0">
+      <p class="other small" id="epOther"></p>
+      <h3>Le bon de travail émis</h3>
+      <div class="wo" id="wo"></div>
+    </div>
+  </div>
+</section>
+
+<section id="bench">
+  <div class="eyebrow">Comparaison</div>
+  <h2 id="benchTitle">200 alarmes simulées</h2>
+  <p class="col" id="benchIntro"></p>
+  <figure class="fig">
+    <div class="bars" id="costBars"></div>
+    <figcaption id="costCap">Coût moyen par alarme : tests, visites, temps d'attente, intervention et conséquence d'une cause manquée.</figcaption>
+  </figure>
+  <div class="tbl">
+    <table>
+      <thead><tr id="byCauseHead"></tr></thead>
+      <tbody id="byCause"></tbody>
+    </table>
+  </div>
+  <h3>Sensibilité aux coûts</h3>
+  <p class="col small muted">Les coûts de référence sont illustratifs. Les décisions restent celles prises avec ces coûts ; seuls les totaux sont recalculés.</p>
+  <div class="controls" id="controls"></div>
+</section>
+
+<section id="llm">
+  <div class="eyebrow">Modèles de langage</div>
+  <h2>Deux LLM avec les mêmes outils</h2>
+  <p class="col" id="llmIntro"></p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Alarme</th><th>Cause réelle</th><th>Petit modèle (Haiku)</th><th>Modèle moyen (Sonnet)</th><th>Politique VOI</th></tr></thead>
+      <tbody id="llmRows"></tbody>
+      <tfoot id="llmFoot"></tfoot>
+    </table>
+  </div>
+  <p class="col" id="llmTake"></p>
+</section>
+
+<section id="research">
+  <div class="eyebrow">Pistes</div>
+  <h2>Questions de recherche</h2>
+  <ul class="list col">
+    <li><b>Apprendre quand tester.</b> La politique VOI calcule la valeur de chaque test avec un modèle thermique de la pompe écrit à la main. Sans ce modèle, un agent doit estimer cette valeur à partir des documents et des données. L'apprentissage par renforcement multi-tours sur le simulateur, avec le coût total de l'épisode comme récompense, est un candidat direct. La question est de savoir si l'agent apprend à tester là où le test change la décision, et seulement là.</li>
+    <li><b>Savoir quand on en sait assez.</b> Les e-values sont des statistiques de test qu'on peut consulter après chaque nouvelle mesure sans gonfler le taux de fausses alertes, ce qu'une valeur p recalculée en continu ne permet pas. Elles donnent une règle d'arrêt pour l'enquête et un registre des hypothèses écartées, avec une borne sur les erreurs.</li>
+    <li><b>Changer d'équipement.</b> D'un équipement à l'autre, le manuel, la base de connaissances et la dynamique changent ; les outils et la forme de la décision restent. Il faut mesurer ce qui se transfère et ce qui doit être réappris ; c'est la question pratique dès qu'un même agent sert plusieurs sites et plusieurs industries.</li>
+    <li><b>Petits modèles locaux.</b> Un modèle de quelques milliards de paramètres, entraîné sur ce banc d'essai, pourrait tourner sur site, en DMZ, sans accès réseau. Combien perd-il en qualité de décision par rapport à un grand modèle&nbsp;?</li>
+  </ul>
+  <h3>Limites</h3>
+  <ul class="list col">
+    <li>Les documents, la base de connaissances, le journal, les fréquences des causes et les coûts sont synthétiques. Seul le modèle de la pompe vient de la littérature (Daigle et Goebel, 2013).</li>
+    <li>Un seul équipement, une seule alarme, et quatre causes choisies pour être difficiles à séparer sur l'historique.</li>
+    <li>Les règles et la politique VOI ont été écrites en connaissant le simulateur. Leurs coûts sont des références, pas des estimations de ce qu'on obtiendrait sur un site réel.</li>
+    <li>Les deux LLM ont été évalués sur huit alarmes, une exécution par alarme.</li>
+  </ul>
+  <p class="col"><b>Une première étape possible :</b> choisir avec un partenaire industriel un équipement et des documents de fabricant réels, reconstruire le banc d'essai autour, et valider sur un historien réel, avec un stagiaire qui fait le lien entre l'université et le site.</p>
+</section>
+
+<footer>
+  <span>Pierre-Luc Bacon, Université de Montréal (DIRO) et Mila. Code, données et instructions pour reproduire les résultats : <a href="https://github.com/pierrelux/agentic-maintenance">github.com/pierrelux/agentic-maintenance</a>.</span>
+  <span>Physique : modèle CentrifugalPump de NASA ProgPy (Daigle et Goebel, 2013), intégré au pas de 2 s, avec variation entre unités, ambiante journalière, perturbation non mesurée de l'eau de refroidissement et bruit de mesure. Documents, base de connaissances, journal et coûts sont synthétiques et illustratifs.</span>
+  <span id="footLLM"></span>
+</footer>
+</div>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function () {
+  const D = JSON.parse(document.getElementById("data").textContent);
+  const $ = (id) => document.getElementById(id);
+  const H = ["bearing_wear", "rtd_drift", "cooler_fouling", "ambient"];
+  const HL = { bearing_wear: "Usure du roulement", rtd_drift: "Dérive de la sonde", cooler_fouling: "Refroidisseur encrassé", ambient: "Local trop chaud" };
+  const AL = { replace_bearing: "Remplacer le roulement", replace_rtd: "Remplacer la sonde", clean_cooler: "Nettoyer le refroidisseur", monitor: "Surveiller" };
+  const FIX = { replace_bearing: "bearing_wear", replace_rtd: "rtd_drift", clean_cooler: "cooler_fouling", monitor: "ambient" };
+  const POL = [
+    ["replace", "Remplacer le roulement à chaque alarme"],
+    ["inspect", "Envoyer un technicien au roulement"],
+    ["rules", "Règles du manuel, puis technicien"],
+    ["voi", "Politique VOI (valeur de l'information, modèle écrit à la main)"],
+    ["oracle", "Oracle : cause connue d'avance"],
+  ];
+  const nf = new Intl.NumberFormat("fr-CA", { maximumFractionDigits: 0 });
+  const nf1 = new Intl.NumberFormat("fr-CA", { maximumFractionDigits: 1, minimumFractionDigits: 1 });
+  const k$ = (x) => (x >= 100000 ? nf.format(x / 1000) : nf1.format(x / 1000)) + "\u00a0k$";
+  const pct = (a) => (a >= 1 ? "100" : (Math.floor(a * 1000) / 10).toString().replace(".", ","));
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const S = D.showcase;
+
+  // ------------------------------------------------------------------ costs
+  const DEF = { V: D.costs.V, bearing: D.costs.action.replace_bearing, down: 18, insp: D.costs.inspection };
+  let P = Object.assign({}, DEF);
+  function unaddr(h) {
+    if (h === "bearing_wear") return P.down * P.V + 45000;
+    if (h === "cooler_fouling") return 12 * P.V + 30000;
+    if (h === "rtd_drift") return 12000;
+    return 0;
+  }
+  function act(a) { return a === "replace_bearing" ? P.bearing : D.costs.action[a]; }
+  function cost(r, h) {
+    let c = r.lost_h * P.V + r.insp * P.insp + r.wait_h * D.costs.delay_per_h + act(r.a);
+    if (FIX[r.a] !== h) c += unaddr(h);
+    return c;
+  }
+  function stats(rows, key) {
+    let tot = 0, ok = 0; const by = {}, n = {};
+    H.forEach((h) => { by[h] = 0; n[h] = 0; });
+    rows.forEach((r) => { const c = cost(r.p[key], r.h); tot += c; by[r.h] += c; n[r.h]++; if (FIX[r.p[key].a] === r.h) ok++; });
+    H.forEach((h) => { by[h] = n[h] ? by[h] / n[h] : 0; });
+    return { mean: tot / rows.length, acc: ok / rows.length, by, n };
+  }
+
+  // ------------------------------------------------------------------ header
+  const alarmT = S.alarm_at;
+  const ttAlarm = S.history_10min.Tt[S.history_10min.Tt.length - 1];
+  $("alarmRow").innerHTML =
+    "<span class=\"muted\">alarme simulée " + esc(S.id.replace("ep0", "")) + "</span>" +
+    '<span><span class="blink" aria-hidden="true"></span>' + esc(alarmT) + "</span>" +
+    "<span>P201.TT_THRUST</span><span class=\"sev\">HAUTE</span>" +
+    "<span>" + esc(S.alarm_value.toFixed(1).replace(".", ",")) + " °C</span><span class=\"muted\">limite 72,0 °C</span>";
+
+  // ------------------------------------------------------------------ causes table
+  const CAUSE = {
+    bearing_wear: ["La butée monte de plus en plus vite ; l'huile monte un peu", "Remplacer le roulement à l'arrêt planifié"],
+    rtd_drift: ["La lecture monte ; la physique ne change pas", "Remplacer la sonde"],
+    cooler_fouling: ["L'huile monte d'abord et le plus ; le reste suit", "Nettoyer le refroidisseur"],
+    ambient: ["Tout suit la température du local", "Aucune intervention, surveiller"],
+  };
+  const MISS = { bearing_wear: "Bris en service, 18 h d'arrêt", rtd_drift: "Alarmes nuisibles, protection perdue", cooler_fouling: "Surchauffe d'huile, arrêt", ambient: "Rien" };
+  function renderCauses() {
+    $("causeRows").innerHTML = H.map((h, i) =>
+      "<tr><td><b><span class=\"cnum\">" + (i + 1) + "</span>" + HL[h] + "</b></td><td>" + CAUSE[h][0] + "</td><td>" + CAUSE[h][1] +
+      " <span class=\"muted num\">(" + k$(act(Object.keys(FIX).find((a) => FIX[a] === h))) + ")</span></td>" +
+      "<td class=\"r\">" + MISS[h] + "<br><span class=\"muted\">" + k$(unaddr(h)) + "</span></td>" +
+      "<td class=\"r\">" + Math.round(D.prior[h] * 100) + " %</td></tr>").join("");
+  }
+
+  // ------------------------------------------------------------------ svg helpers
+  const NS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs, parent) {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function ticks(lo, hi, n) {
+    const span = hi - lo, step0 = span / n, mag = Math.pow(10, Math.floor(Math.log10(step0)));
+    const step = [1, 2, 2.5, 5, 10].map((m) => m * mag).find((s) => s >= step0);
+    const out = []; for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) out.push(+v.toFixed(6));
+    return out;
+  }
+  const fmtC = (v) => (Math.round(v * 10) / 10).toString().replace(".", ",");
+
+  // ------------------------------------------------------------------ trend chart
+  function trendData() {
+    const h = S.history_10min, nH = h.Tt.length;
+    const xs = [], tt = [], oil = [], amb = [];
+    for (let i = 0; i < nH; i++) {
+      const x = -S.history_h + (i + 1) * 10 / 60;
+      if (x > -1) break;
+      xs.push(x); tt.push(h.Tt[i]); oil.push(h.To[i]); amb.push(h.Tamb[i]);
+    }
+    const a = S.after.llm;
+    for (let j = 0; j < a.Tt.length; j++) {
+      xs.push(-1 + (j + 1) * 5 / 60); tt.push(a.Tt[j]); oil.push(a.To[j]); amb.push(a.Tamb[j]);
+    }
+    return { xs, series: [["Tt", "s1", tt, "Butée"], ["To", "s2", oil, "Huile"], ["Tamb", "s3", amb, "Local"]] };
+  }
+  function renderTrend() {
+    if (!$("trend")) return;
+    const box = $("trend"), W = Math.max(320, box.clientWidth || 780), Hh = W < 520 ? 260 : 300;
+    const m = { l: 34, r: 54, t: 10, b: 24 };
+    box.innerHTML = "";
+    const svg = el("svg", { viewBox: "0 0 " + W + " " + Hh, role: "img", "aria-label": "Tendance des températures de P-201 autour de l'alarme" }, box);
+    const T = trendData();
+    const x0 = T.xs[0], x1 = T.xs[T.xs.length - 1];
+    let ylo = Infinity, yhi = -Infinity;
+    T.series.forEach((s) => s[2].forEach((v) => { ylo = Math.min(ylo, v); yhi = Math.max(yhi, v); }));
+    ylo = Math.floor((ylo - 2) / 5) * 5; yhi = Math.ceil((Math.max(yhi, 74) + 1) / 5) * 5;
+    const X = (x) => m.l + (x - x0) / (x1 - x0) * (W - m.l - m.r);
+    const Y = (y) => m.t + (yhi - y) / (yhi - ylo) * (Hh - m.t - m.b);
+    ticks(ylo, yhi, 6).forEach((v) => {
+      el("line", { x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v), class: "grid" }, svg);
+      el("text", { x: m.l - 6, y: Y(v) + 4, "text-anchor": "end" }, svg).textContent = v;
+    });
+    const xt = [-48, -36, -24, -12, 0].concat(x1 > 6 ? [Math.floor(x1 / 4) * 4] : []);
+    xt.forEach((v) => {
+      if (v < x0 - 0.01 || v > x1 + 0.01) return;
+      el("text", { x: X(v), y: Hh - 6, "text-anchor": "middle" }, svg).textContent = (v > 0 ? "+" : "") + v + " h";
+    });
+    el("line", { x1: m.l, x2: W - m.r, y1: Hh - m.b, y2: Hh - m.b, class: "axis" }, svg);
+    // test and inspection windows
+    (S.after.llm.segments || []).forEach((sg) => {
+      const a = sg.start / 60, b = sg.end / 60;
+      el("rect", { x: X(a), y: m.t, width: Math.max(2, X(b) - X(a)), height: Hh - m.t - m.b, class: sg.kind === "speed_step" ? "band" : "band2" }, svg);
+      if (sg.kind === "speed_step") el("text", { x: X(a) - 6, y: Hh - m.b - 8, "text-anchor": "end", class: "lbl" }, svg).textContent = "palier 90 %";
+    });
+    el("line", { x1: X(0), x2: X(0), y1: m.t, y2: Hh - m.b, class: "cross", style: "stroke-dasharray:none;opacity:.6" }, svg);
+    el("line", { x1: m.l, x2: W - m.r, y1: Y(72), y2: Y(72), class: "limit" }, svg);
+    el("text", { x: m.l + 4, y: Y(72) - 5, class: "limit-t" }, svg).textContent = "72 °C";
+    T.series.forEach((s) => {
+      const d = s[2].map((v, i) => (i ? "L" : "M") + X(T.xs[i]).toFixed(1) + "," + Y(v).toFixed(1)).join("");
+      el("path", { d, class: "line " + s[1] }, svg);
+      const lastV = s[2][s[2].length - 1];
+      el("text", { x: W - m.r + 6, y: Y(lastV) + 4, class: "lbl" }, svg).textContent = s[3];
+    });
+    // hover
+    const tip = $("trendTip"), fig = $("trendFig");
+    const cross = el("line", { y1: m.t, y2: Hh - m.b, class: "cross", visibility: "hidden" }, svg);
+    const dots = T.series.map((s) => el("circle", { r: 4, class: "f" + s[1].slice(1), stroke: "var(--surface)", "stroke-width": 2, visibility: "hidden" }, svg));
+    const hit = el("rect", { x: m.l, y: m.t, width: W - m.l - m.r, height: Hh - m.t - m.b, fill: "transparent" }, svg);
+    function move(ev) {
+      const r = svg.getBoundingClientRect(), px = (ev.clientX - r.left) * W / r.width;
+      const xv = x0 + (px - m.l) / (W - m.l - m.r) * (x1 - x0);
+      let i = 0, best = Infinity; T.xs.forEach((x, k) => { const d = Math.abs(x - xv); if (d < best) { best = d; i = k; } });
+      cross.setAttribute("x1", X(T.xs[i])); cross.setAttribute("x2", X(T.xs[i])); cross.setAttribute("visibility", "visible");
+      T.series.forEach((s, k) => { dots[k].setAttribute("cx", X(T.xs[i])); dots[k].setAttribute("cy", Y(s[2][i])); dots[k].setAttribute("visibility", "visible"); });
+      const xr = T.xs[i];
+      tip.innerHTML = (xr >= 0 ? "+" : "") + fmtC(xr) + " h<br>Butée " + fmtC(T.series[0][2][i]) + " °C<br>Huile " + fmtC(T.series[1][2][i]) + " °C<br>Local " + fmtC(T.series[2][2][i]) + " °C";
+      const fr = fig.getBoundingClientRect();
+      tip.style.left = Math.min(fr.width - 70, Math.max(70, ev.clientX - fr.left)) + "px";
+      tip.style.top = (r.top - fr.top + Y(T.series[0][2][i]) * r.height / Hh) + "px";
+      tip.hidden = false;
+    }
+    function leave() { tip.hidden = true; cross.setAttribute("visibility", "hidden"); dots.forEach((d) => d.setAttribute("visibility", "hidden")); }
+    hit.addEventListener("pointermove", move); hit.addEventListener("pointerleave", leave);
+  }
+
+  // ------------------------------------------------------------------ probe chart
+  function renderProbe() {
+    const box = $("probe"), W = Math.max(280, box.clientWidth || 380), Hh = 220;
+    const m = { l: 34, r: 70, t: 12, b: 26 };
+    box.innerHTML = "";
+    const pr = S.probe; if (!pr) { box.textContent = "Pas de palier de vitesse dans cet épisode."; return; }
+    const svg = el("svg", { viewBox: "0 0 " + W + " " + Hh, role: "img", "aria-label": "Réponse au palier de vitesse : mesurée et prévue" }, box);
+    const n = pr.observed.length, xs = pr.observed.map((_, i) => (i + 1) * 5);
+    const lines = [["bearing_wear", "s1", "usure"], ["rtd_drift", "s2", "sonde"]].filter((l) => pr.predicted[l[0]]);
+    let lo = 0, hi = 0;
+    pr.observed.forEach((v) => { lo = Math.min(lo, v); hi = Math.max(hi, v); });
+    lines.forEach((l) => pr.predicted[l[0]].forEach((v) => { lo = Math.min(lo, v); }));
+    lo = Math.floor(lo - 0.5); hi = Math.max(0.5, Math.ceil(hi));
+    const X = (x) => m.l + (x - 0) / (xs[n - 1] - 0) * (W - m.l - m.r);
+    const Y = (y) => m.t + (hi - y) / (hi - lo) * (Hh - m.t - m.b);
+    ticks(lo, hi, 5).forEach((v) => {
+      el("line", { x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v), class: "grid" }, svg);
+      el("text", { x: m.l - 6, y: Y(v) + 4, "text-anchor": "end" }, svg).textContent = (v > 0 ? "+" : "") + v;
+    });
+    [0, 15, 30, 45].filter((v) => v <= xs[n - 1]).forEach((v) => el("text", { x: X(v), y: Hh - 6, "text-anchor": "middle" }, svg).textContent = v + " min");
+    el("line", { x1: m.l, x2: W - m.r, y1: Y(0), y2: Y(0), class: "axis" }, svg);
+    lines.forEach((l) => {
+      const v = [0].concat(pr.predicted[l[0]]), x = [0].concat(xs);
+      el("path", { d: v.map((y, i) => (i ? "L" : "M") + X(x[i]).toFixed(1) + "," + Y(y).toFixed(1)).join(""), class: "line " + l[1] }, svg);
+      el("text", { x: W - m.r + 6, y: Y(v[v.length - 1]) + 4, class: "lbl" }, svg).textContent = l[2] + " " + fmtC(v[v.length - 1]);
+    });
+    const tip = $("probeTip"), fig = $("probeFig");
+    pr.observed.forEach((v, i) => {
+      const c = el("circle", { cx: X(xs[i]), cy: Y(v), r: 4.5, class: "obs" }, svg);
+      const hitc = el("circle", { cx: X(xs[i]), cy: Y(v), r: 12, fill: "transparent" }, svg);
+      hitc.addEventListener("pointerenter", () => {
+        const r = svg.getBoundingClientRect(), fr = fig.getBoundingClientRect();
+        let t = xs[i] + " min<br>mesuré " + fmtC(v) + " °C";
+        lines.forEach((l) => { t += "<br>" + l[2] + " " + fmtC(pr.predicted[l[0]][i]) + " °C"; });
+        tip.innerHTML = t;
+        tip.style.left = Math.min(fr.width - 60, Math.max(60, r.left - fr.left + X(xs[i]) * r.width / W)) + "px";
+        tip.style.top = (r.top - fr.top + Y(v) * r.height / Hh) + "px";
+        tip.hidden = false;
+      });
+      hitc.addEventListener("pointerleave", () => { tip.hidden = true; });
+    });
+    const lastObs = pr.observed[n - 1];
+    el("text", { x: X(xs[n - 1]) - 8, y: Y(lastObs) + 18, "text-anchor": "end", class: "lbl" }, svg).textContent = "mesuré " + fmtC(lastObs);
+  }
+
+  // ------------------------------------------------------------------ episode text
+  function renderEpisode() {
+    const tr = S.llm.trace, res = S.llm.result;
+    $("epIntro").innerHTML = S.intro;
+    $("epOther").innerHTML = "<b>L'autre enquête.</b> " + esc(S.other);
+    const TOOLFR = {
+      get_alarm: ["Lit l'alarme", ""], list_tags: ["Liste les étiquettes de l'historien", ""],
+      get_telemetry: ["Lit l'historien", ""], list_documents: ["Liste les documents", ""],
+      read_document: ["Lit", ""], search_documents: ["Cherche dans les documents", ""],
+      run_speed_step_test: ["Lance un palier de vitesse", ""], request_inspection: ["Demande une inspection", ""],
+      submit_work_order: ["Émet le bon de travail", ""],
+    };
+    const DOCFR = { "manual/specs": "le manuel, spécifications", "manual/thermal": "le manuel, comportement thermique", "manual/troubleshooting": "le manuel, dépannage", "manual/tests": "le manuel, tests de diagnostic", "manual/instrumentation": "le manuel, instrumentation", "kb/p201-family": "la base de connaissances du site", "log/P-201": "le journal de maintenance" };
+    const costOf = {};
+    S.llm.ledger.forEach((e) => { costOf[e.label] = (costOf[e.label] || 0) + e.amount; });
+    // collapse consecutive reads into readable steps
+    const steps = [];
+    tr.forEach((t) => {
+      if (t.tool === "list_tags" || t.tool === "list_documents" || t.tool === "get_alarm") return;
+      let what = TOOLFR[t.tool][0], c = "";
+      if (t.tool === "read_document") what = "Lit " + (DOCFR[t.args.doc_id] || t.args.doc_id);
+      if (t.tool === "get_telemetry") what = "Lit l'historien : " + (t.args.tags || []).map((x) => x.replace("P201.", "")).join(", ") + " sur " + t.args.hours + " h";
+      if (t.tool === "run_speed_step_test") { what = "<b>Palier de vitesse à " + Math.round(t.args.speed_pct) + " % pendant " + t.args.duration_min + " min</b>"; c = k$(S.probe_cost); }
+      if (t.tool === "request_inspection") { what = "<b>Inspection : " + t.args.component + "</b>"; c = "1,8 k$ + 8 h"; }
+      if (t.tool === "submit_work_order") { what = "<b>Bon de travail : " + AL[t.args.action] + "</b>"; c = k$(act(t.args.action)); }
+      const prev = steps[steps.length - 1];
+      if (t.tool === "read_document") {
+        const st = prev && prev.tool === "read_document" ? prev : { tool: "read_document", docs: [], at: t.at, c: "" };
+        st.docs.push(t.args.doc_id);
+        const nMan = new Set(st.docs.filter((d) => d.indexOf("manual/") === 0)).size;
+        const parts = [];
+        if (nMan) parts.push(nMan + (nMan > 1 ? " sections du manuel" : " section du manuel"));
+        if (st.docs.indexOf("kb/p201-family") >= 0) parts.push("la base de connaissances du site");
+        if (st.docs.indexOf("log/P-201") >= 0) parts.push("le journal de maintenance");
+        st.what = "Lit " + parts.join(", ").replace(/, ([^,]*)$/, " et $1");
+        if (st !== prev) steps.push(st);
+        return;
+      }
+      if (prev && prev.tool === t.tool && t.tool === "get_telemetry") { prev.n = (prev.n || 1) + 1; prev.what = "Lit l'historien (" + prev.n + " requêtes)"; return; }
+      steps.push({ tool: t.tool, what, at: t.at, c });
+    });
+    if ($("steps")) $("steps").innerHTML = steps.map((s) => "<li><span class=\"what\">" + s.what + "<span class=\"tool\">" + esc(s.at) + "</span></span><span class=\"cost\">" + (s.c || "") + "</span></li>").join("");
+    // beliefs from the value-of-information agent on the same alarm
+    const B = S.voi.beliefs;
+    const stageName = (s) => s === "history" ? "Après 48 h d'historique" : (s.indexOf("speed_step") >= 0 ? "Après le palier de vitesse" : "Après l'inspection");
+    $("belief").innerHTML = "<div class=\"small muted\">Probabilité de chaque cause selon la politique VOI, sur la même alarme</div>" + B.map((b) => {
+      const top = H.reduce((a, h) => (b.probs[h] > b.probs[a] ? h : a), H[0]);
+      return "<div class=\"stage\"><div class=\"eyebrow\">" + stageName(b.step) + "</div>" + H.map((h) =>
+        "<div class=\"row" + (h === top ? " top" : "") + "\"><span>" + HL[h] + "</span><span class=\"bar\"><span style=\"width:" + (100 * b.probs[h]).toFixed(1) + "%\"></span></span><span class=\"p\">" + Math.round(100 * b.probs[h]) + " %</span></div>").join("") + "</div>";
+    }).join("");
+    // work order
+    $("wo").innerHTML = "<div class=\"hd\"><span>BON DE TRAVAIL · <b>P-201</b></span><span>émis " + esc(S.wo_time) + "</span><span>priorité <b>" + esc(S.wo_priority) + "</b></span></div>" +
+      "<div class=\"bd\">" +
+      "<div class=\"fld\"><span>Action</span><span><b>" + AL[res.action] + "</b></span></div>" +
+      "<div class=\"fld\"><span>Diagnostic</span><span>" + esc(S.wo_diag) + "</span></div>" +
+      "<div class=\"fld\"><span>Consignes</span><span>" + esc(S.wo_text) + "</span></div>" +
+      "<div class=\"fld\"><span>Coût de l'épisode</span><span class=\"num\">" + k$(res.total_cost_cad) + " · cause réelle : " + HL[res.true_cause] + (res.correct ? " · <span class=\"pill ok\">bonne cause</span>" : " · <span class=\"pill ko\">mauvaise cause</span>") + "</span></div>" +
+      "</div>";
+  }
+
+  // ------------------------------------------------------------------ benchmark
+  function renderBench() {
+    const rows = D.bench, st = {};
+    POL.forEach(([k]) => { st[k] = stats(rows, k); });
+    const max = Math.max.apply(null, POL.map(([k]) => st[k].mean));
+    $("costBars").innerHTML = POL.map(([k, lab]) =>
+      "<div class=\"b" + (k === "voi" ? " hl" : "") + (k === "oracle" ? " or" : "") + "\"><span>" + lab + "<br><span class=\"small muted\">bonne cause " + pct(st[k].acc) + " %</span></span><span class=\"track\"><span style=\"width:" + (100 * st[k].mean / max).toFixed(1) + "%\"></span></span><span class=\"v\">" + k$(st[k].mean) + "</span></div>").join("");
+    $("byCauseHead").innerHTML = "<th>Coût moyen par cause</th>" + POL.map(([k, lab]) => "<th class=\"r\">" + ({ replace: "Remplacer", inspect: "Technicien", rules: "Règles", voi: "VOI", oracle: "Oracle" })[k] + "</th>").join("");
+    $("byCause").innerHTML = H.map((h) => "<tr><td>" + HL[h] + " <span class=\"muted small num\">(" + st.voi.n[h] + ")</span></td>" + POL.map(([k]) => "<td class=\"r\">" + k$(st[k].by[h]) + "</td>").join("") + "</tr>").join("");
+    const v = st.voi, o = st.oracle, insp = st.inspect, ru = st.rules;
+    $("summary").innerHTML =
+      "<div><span class=\"eyebrow\">Le cas</span><span class=\"k\">Sur l'historique seul, l'usure du roulement et la dérive de sonde donnent la même rampe sur la même lecture. Un palier de vitesse de 45 minutes les sépare : les baisses attendues diffèrent d'environ 1 °C, pour un bruit de sonde de ±0,25 °C.</span></div>" +
+      "<div><span class=\"eyebrow\">Observation</span><span class=\"k\">Sur 12 alarmes où il fallait séparer usure et dérive, Claude Haiku et Claude Sonnet ont lancé ce test 4 fois. Les 8 autres fois, ils ont payé un technicien et huit heures d'attente.</span></div>" +
+      "<div><span class=\"eyebrow\">Question ouverte</span><span class=\"k\">Une politique de valeur de l'information, construite sur un modèle thermique écrit à la main, coûte <span class=\"num\">" + k$(v.mean) + "</span> par alarme, contre <span class=\"num\">" + k$(o.mean) + "</span> pour un oracle. Peut-on apprendre ce comportement sans ce modèle, à partir des documents et des données&nbsp;?</span></div>";
+    const rulesMiss = rows.filter((r) => FIX[r.p.rules.a] !== r.h).length;
+    $("benchTitle").textContent = rows.length + " alarmes simulées";
+    $("benchIntro").innerHTML = "Cinq politiques reçoivent les mêmes " + rows.length + " alarmes. L'oracle connaît la cause et donne la borne inférieure du coût. La procédure centrée sur le roulement rate le refroidisseur encrassé et remplace des roulements sains quand le local est chaud. " +
+      "Les règles tirées du manuel trouvent la bonne cause " + (rows.length - rulesMiss) + " fois sur " + rows.length +
+      ", mais envoient un technicien, avec huit heures d'attente, pour chaque cas usure ou sonde. La politique VOI tranche ces cas par un palier de vitesse de 45 minutes et finit à " + k$(v.mean - o.mean) + " de l'oracle par alarme. " +
+      "Les règles comme la politique VOI ont été écrites en connaissant le simulateur, et la seconde repose sur un modèle thermique fait à la main : ce sont des références, et ni l'une ni l'autre ne se transpose telle quelle à un autre équipement.";
+    renderCauses();
+  }
+
+  function renderControls() {
+    const C = [
+      ["V", "Valeur de la production", 2000, 30000, 1000, (x) => nf.format(x) + " $/h"],
+      ["down", "Arrêt non planifié si le roulement casse", 4, 36, 1, (x) => x + " h"],
+      ["bearing", "Remplacement planifié du roulement", 10000, 60000, 1000, (x) => k$(x)],
+      ["insp", "Visite d'un technicien", 500, 5000, 100, (x) => nf.format(x) + " $"],
+    ];
+    $("controls").innerHTML = C.map((c) => "<label for=\"c_" + c[0] + "\"><span class=\"top\"><span>" + c[1] + "</span><span class=\"val\" id=\"v_" + c[0] + "\"></span></span><input type=\"range\" id=\"c_" + c[0] + "\" min=\"" + c[2] + "\" max=\"" + c[3] + "\" step=\"" + c[4] + "\" value=\"" + P[c[0]] + "\"></label>").join("") +
+      "<button class=\"reset\" id=\"resetC\" type=\"button\">Revenir aux coûts de référence</button>";
+    function sync() { C.forEach((c) => { $("v_" + c[0]).textContent = c[5](P[c[0]]); }); renderBench(); }
+    C.forEach((c) => $("c_" + c[0]).addEventListener("input", (e) => { P[c[0]] = +e.target.value; sync(); }));
+    $("resetC").addEventListener("click", () => { P = Object.assign({}, DEF); C.forEach((c) => { $("c_" + c[0]).value = P[c[0]]; }); sync(); });
+    sync();
+  }
+
+  // ------------------------------------------------------------------ LLM table
+  function renderLLM() {
+    const by = {};
+    D.llm.forEach((r) => { (by[r.id] = by[r.id] || {})[r.model] = r; });
+    const ref = {}; (D.bench_llmset || []).forEach((r) => { ref[r.id] = r; });
+    function cell(r, h) {
+      if (!r || !r.done) return "<span class=\"muted\">n/d</span>";
+      const tests = (r.tests || []).map((t) => t.speed_pct ? "<span class=\"pill test\">palier " + Math.round(t.speed_pct) + " %</span>" : "<span class=\"pill tech\">" + ({ thrust_bearing: "tech. roulement", rtd_loop: "tech. boucle RTD", oil_cooler: "tech. refroidisseur" })[t.component] + "</span>").join(" ");
+      const c = r.rec ? cost(r.rec, h) : r.total;
+      return AL[r.action] + " <span class=\"pill " + (r.correct ? "ok\">OK" : "ko\">erreur") + "</span>" + (tests ? "<br>" + tests : "") + "<br><span class=\"muted num small\">" + k$(c) + "</span>";
+    }
+    const ids = Object.keys(by).sort();
+    $("llmRows").innerHTML = ids.map((id) => {
+      const h = (by[id].haiku || by[id].sonnet).true;
+      const v = ref[id] ? ref[id].p.voi : null;
+      const vcell = v ? AL[v.a] + " <span class=\"pill " + (FIX[v.a] === h ? "ok\">OK" : "ko\">erreur") + "</span>" + (v.lost_h > 0 ? "<br><span class=\"pill test\">palier 90 %</span>" : "") + (v.insp > 0 ? "<br><span class=\"pill tech\">technicien</span>" : "") + "<br><span class=\"muted num small\">" + k$(cost(v, h)) + "</span>" : "";
+      return "<tr><td class=\"mono small\">" + id.replace("ep0", "") + "</td><td>" + HL[h] + "</td><td>" + cell(by[id].haiku, h) + "</td><td>" + cell(by[id].sonnet, h) + "</td><td>" + vcell + "</td></tr>";
+    }).join("");
+    function tot(get) {
+      let ok = 0, c = 0, n = 0;
+      ids.forEach((id) => { const g = get(id); if (!g) return; n++; if (g.ok) ok++; c += g.c; });
+      return n ? "<b>" + ok + " / " + n + "</b> bonnes causes<br><span class=\"num\">" + k$(c / n) + "</span> par alarme" : "";
+    }
+    const pick = (m) => (id) => { const r = by[id][m]; if (!r || !r.done) return null; const h = r.true; return { ok: r.correct, c: r.rec ? cost(r.rec, h) : r.total }; };
+    $("llmFoot").innerHTML = "<tr><th colspan=\"2\">Moyenne</th><td>" + tot(pick("haiku")) + "</td><td>" + tot(pick("sonnet")) + "</td><td>" +
+      tot((id) => { const v = ref[id] ? ref[id].p.voi : null; if (!v) return null; const h = (by[id].haiku || by[id].sonnet).true; return { ok: FIX[v.a] === h, c: cost(v, h) }; }) + "</td></tr>";
+    $("llmIntro").innerHTML = D.llm_text.intro;
+    $("llmTake").innerHTML = D.llm_text.take;
+    $("footLLM").textContent = D.llm_text.foot;
+  }
+
+  // ------------------------------------------------------------------ replay player
+  const RP = D.replay, CON = D.console;
+  const AGENTS = [["haiku", "Claude Haiku"], ["sonnet", "Claude Sonnet"], ["voi", "Politique VOI"]];
+  const AGENT_NOTE = { haiku: "petit modèle, sans ajustement", sonnet: "modèle moyen, sans ajustement", voi: "programme de valeur de l'information" };
+  const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const rp = { eid: S.id, who: "haiku", gen: 0, loopGen: -1, paused: true, speed: 1, i: 0, t: 0, done: false };
+
+  // ------------------------------------------------------------------ pump mimic
+  // Schematic of P-201 in the style of an operator console: motor, bearing housing (radial bearing and
+  // thrust bearing), centrifugal pump, oil circuit through the cooler, unmeasured cooling water, and the
+  // five historian tags. Impeller and flows move at the current speed and flow; the thrust bearing's
+  // shade follows its measured temperature.
+  const PM_NOM = { rpm: RP.alarms[S.id].rpm0, flow: RP.alarms[S.id].flow0 };
+  function pumpMarkup(withCauses) {
+    const tag = (cls, x, y, w, lab) => "<g class=\"tag " + cls + "\"><rect class=\"bx\" x=\"" + x + "\" y=\"" + y + "\" width=\"" + w + "\" height=\"28\" rx=\"3\"/>" +
+      "<rect class=\"sw\" x=\"" + x + "\" y=\"" + y + "\" width=\"3\" height=\"28\" rx=\"1\"/>" +
+      "<text class=\"tl\" x=\"" + (x + 8) + "\" y=\"" + (y + 11) + "\">" + lab + "</text><text class=\"tv\" x=\"" + (x + 8) + "\" y=\"" + (y + 23.5) + "\"></text></g>";
+    const ring = (k, x, y, w, h) => "<rect class=\"ring\" data-k=\"" + k + "\" x=\"" + x + "\" y=\"" + y + "\" width=\"" + w + "\" height=\"" + h + "\" rx=\"5\"/>";
+    const mk = (n, x, y) => "<g class=\"mk\"><circle cx=\"" + x + "\" cy=\"" + y + "\" r=\"7\"/><text x=\"" + x + "\" y=\"" + (y + 3.2) + "\">" + n + "</text></g>";
+    let blades = "";
+    for (let k = 0; k < 6; k++) blades += "<path class=\"blade\" d=\"M310 102 Q322 95 319.6 81.7\" transform=\"rotate(" + 60 * k + " 310 108)\"/>";
+    let zig = "M110 192"; for (let x = 116; x <= 198; x += 6) zig += " L" + x + " " + (((x - 110) / 6) % 2 ? 185 : 199);
+    return "<svg class=\"pm\" viewBox=\"0 0 380 246\" role=\"img\" aria-label=\"Schéma de la pompe P-201 : moteur, paliers dont le roulement de butée, pompe centrifuge, circuit d'huile et refroidisseur, eau de refroidissement non mesurée, et les mesures de l'historien\">" +
+      // pipes first, so equipment sits on top of them
+      "<path class=\"pipe\" d=\"M380 108 H346\"/><path class=\"pipe\" d=\"M310 72 V24 H380\"/>" +
+      "<path class=\"pipe thin\" d=\"M124 130 V180\"/><path class=\"pipe thin\" d=\"M164 180 V130\"/>" +
+      "<path class=\"pipe thin\" d=\"M30 188 H104\"/><path class=\"pipe thin\" d=\"M104 198 H30\"/>" +
+      "<path class=\"flow proc\" data-f=\"proc\" d=\"M380 108 H348\"/><path class=\"flow proc\" data-f=\"proc\" d=\"M310 70 V24 H380\"/>" +
+      "<path class=\"flow oil\" data-f=\"oil\" d=\"M124 130 V180\"/><path class=\"flow oil\" data-f=\"oil\" d=\"M164 180 V130\"/>" +
+      "<path class=\"flow cw\" data-f=\"cw\" d=\"M30 188 H104\"/><path class=\"flow cw\" data-f=\"cw\" d=\"M104 198 H30\"/>" +
+      // motor, coupling, bearing housing, shaft
+      "<rect class=\"st\" x=\"8\" y=\"88\" width=\"7\" height=\"40\" rx=\"2\"/><rect class=\"st\" x=\"14\" y=\"82\" width=\"66\" height=\"52\" rx=\"4\"/>" +
+      "<text class=\"lbl\" x=\"47\" y=\"111\" text-anchor=\"middle\">moteur</text>" +
+      "<rect class=\"st\" x=\"104\" y=\"86\" width=\"120\" height=\"44\" rx=\"6\"/>" +
+      "<line class=\"shaft\" x1=\"80\" y1=\"108\" x2=\"304\" y2=\"108\"/>" +
+      "<rect class=\"st\" x=\"82\" y=\"100\" width=\"12\" height=\"16\" rx=\"2\"/>" +
+      "<rect class=\"brg\" x=\"120\" y=\"95\" width=\"14\" height=\"8\"/><rect class=\"brg\" x=\"120\" y=\"113\" width=\"14\" height=\"8\"/>" +
+      "<rect class=\"thrust-bg\" x=\"190\" y=\"92\" width=\"20\" height=\"32\" rx=\"2\"/><rect class=\"thrust\" x=\"190.6\" y=\"92.6\" width=\"18.8\" height=\"30.8\" rx=\"1.6\"/>" +
+      "<text class=\"lbl\" x=\"200\" y=\"146\" text-anchor=\"middle\">butée</text>" +
+      "<text class=\"lbl\" x=\"104\" y=\"78\">frottement ∝ vitesse²</text>" +
+      // pump casing and impeller
+      "<circle class=\"st\" cx=\"310\" cy=\"108\" r=\"38\"/><g class=\"imp\">" + blades + "<circle class=\"hub\" cx=\"310\" cy=\"108\" r=\"6\"/></g>" +
+      "<text class=\"lbl\" x=\"310\" y=\"162\" text-anchor=\"middle\">pompe</text>" +
+      // oil cooler and cooling water
+      "<rect class=\"st\" x=\"104\" y=\"180\" width=\"100\" height=\"24\" rx=\"3\"/><path class=\"tube\" d=\"" + zig + "\"/>" +
+      "<text class=\"lbl\" x=\"212\" y=\"196\">refroidisseur d'huile</text>" +
+      "<text class=\"lbl\" x=\"12\" y=\"222\">eau de refroidissement</text><text class=\"lbl\" x=\"12\" y=\"234\">non mesurée</text>" +
+      // historian tags and their leaders
+      "<path class=\"lead\" d=\"M47 58 V82\"/><path class=\"lead\" d=\"M226 62 L210 92\"/><path class=\"lead\" d=\"M82 154 H124\"/>" +
+      tag("sp", 12, 30, 70, "VITESSE") + tag("tt", 226, 40, 70, "BUTÉE") + tag("fl", 234, 6, 70, "DÉBIT") +
+      tag("to", 12, 140, 70, "HUILE") + tag("ta", 300, 210, 70, "LOCAL") +
+      ring("speed", 8, 26, 78, 36) + ring("bearing", 184, 86, 32, 44) + ring("rtd", 222, 36, 78, 36) + ring("cooler", 98, 174, 112, 36) + ring("local", 296, 206, 78, 36) +
+      (withCauses ? mk(1, 177, 142) + mk(2, 226, 40) + mk(3, 204, 180) + mk(4, 300, 210) : "") +
+      "</svg>";
+  }
+  function makePump(host, withCauses) {
+    host.innerHTML = pumpMarkup(withCauses);
+    const svg = host.querySelector("svg"), q = (s) => svg.querySelector(s);
+    const imp = q(".imp"), flows = Array.from(svg.querySelectorAll(".flow"));
+    const st = { rpm: PM_NOM.rpm, flow: PM_NOM.flow, ang: 0, off: { proc: 0, oil: 0, cw: 0 }, vis: false, raf: 0, last: 0 };
+    const nf0 = new Intl.NumberFormat("fr-CA", { maximumFractionDigits: 0 });
+    const f1 = (x) => (Math.round(x * 10) / 10).toFixed(1).replace(".", ",");
+    function draw() {
+      imp.setAttribute("transform", "rotate(" + st.ang.toFixed(1) + " 310 108)");
+      flows.forEach((f) => { f.style.strokeDashoffset = st.off[f.dataset.f].toFixed(1); });
+    }
+    function tick(now) {
+      const dt = st.last ? Math.min(0.1, (now - st.last) / 1000) : 0; st.last = now;
+      const r = st.rpm / PM_NOM.rpm;
+      st.ang = (st.ang - dt * 210 * r) % 360;                     // backward-curved blades: tips trail
+      st.off.proc -= dt * 28 * (st.flow / PM_NOM.flow);
+      st.off.oil -= dt * 13 * r;
+      st.off.cw -= dt * 9;
+      draw();
+      st.raf = st.vis ? requestAnimationFrame(tick) : 0;
+    }
+    function set(v) {
+      st.rpm = v.rpm; st.flow = v.flow;
+      q(".tag.tt .tv").textContent = f1(v.Tt) + " °C"; q(".tag.tt").classList.toggle("hi", v.Tt >= 72);
+      q(".tag.to .tv").textContent = f1(v.To) + " °C";
+      q(".tag.ta .tv").textContent = f1(v.Tamb) + " °C";
+      q(".tag.sp .tv").textContent = nf0.format(v.rpm) + " rpm"; q(".tag.sp").classList.toggle("chg", v.rpm < 0.97 * PM_NOM.rpm);
+      q(".tag.fl .tv").textContent = nf0.format(v.flow) + " m³/h"; q(".tag.fl").classList.toggle("chg", v.flow < 0.95 * PM_NOM.flow);
+      q(".thrust").style.fillOpacity = Math.max(0.08, Math.min(0.9, (v.Tt - 40) / 36)).toFixed(3);
+    }
+    function focus(which, kind) {
+      svg.querySelectorAll(".ring").forEach((r) => r.setAttribute("class", "ring" + (which && r.dataset.k === which ? " on " + kind : "")));
+    }
+    draw();
+    if (!reduced && "IntersectionObserver" in window) {
+      new IntersectionObserver((en) => {
+        st.vis = en.some((x) => x.isIntersecting);
+        if (st.vis && !st.raf) { st.last = 0; st.raf = requestAnimationFrame(tick); }
+      }).observe(svg);
+    }
+    return { set, focus };
+  }
+  const PM_INSPECT = { thrust_bearing: "bearing", oil_cooler: "cooler", rtd_loop: "rtd" };
+  const PM_ACTION = { replace_bearing: "bearing", replace_rtd: "rtd", clean_cooler: "cooler", monitor: "local" };
+  let pmLive = null;
+  function initPumpFig() {
+    const al = RP.alarms[S.id], h = al.hist, last = (a) => a[a.length - 1];
+    makePump($("pumpFig"), true).set({ Tt: last(h.Tt), To: last(h.To), Tamb: last(h.Tamb), rpm: al.rpm0, flow: al.flow0 });
+    pmLive = makePump($("rpPump"), false);
+  }
+  const rpRun = () => RP.runs[rp.eid + "|" + rp.who];
+  const wait = (ms) => new Promise((r) => setTimeout(r, reduced ? 0 : ms / rp.speed));
+  const SHORT = (t) => String(t).replace("P201.", "");
+  const agentName = () => AGENTS.find((a) => a[0] === rp.who)[1];
+
+  function clockAt(min) {
+    const a = RP.alarms[rp.eid].alarm_at, d = new Date(a.replace(" ", "T") + ":00");
+    d.setMinutes(d.getMinutes() + Math.round(min));
+    const p = (x) => String(x).padStart(2, "0");
+    return { full: d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()) + " " + p(d.getHours()) + ":" + p(d.getMinutes()), hm: p(d.getHours()) + ":" + p(d.getMinutes()) };
+  }
+  function fmtArgs(tool, a) {
+    const parts = [];
+    for (const k in a || {}) {
+      let v = a[k];
+      if (v === null || v === undefined || k === "justification") continue;
+      if (Array.isArray(v)) v = "[" + v.map(SHORT).join(", ") + "]";
+      else if (typeof v === "string") v = "\"" + (v.length > 90 ? v.slice(0, 88) + "…" : v) + "\"";
+      parts.push(k + "=" + v);
+    }
+    return "<b>" + esc(tool) + "</b>(" + esc(parts.join(", ")) + ")";
+  }
+  function expandable(box, lines, keep) {
+    const pre = document.createElement("div"); pre.className = "doc";
+    pre.textContent = lines.slice(0, keep).join("\n"); box.appendChild(pre);
+    if (lines.length > keep) {
+      const info = document.createElement("div"); info.className = "more"; info.textContent = "… " + lines.length + " lignes ";
+      const b = document.createElement("button"); b.type = "button"; b.textContent = "tout afficher";
+      b.addEventListener("click", () => { pre.textContent = lines.join("\n"); info.remove(); });
+      info.appendChild(b); box.appendChild(info);
+    }
+  }
+  function renderDisplay(o) {
+    const box = document.createElement("div"); box.className = "out";
+    if (o.kind === "kv") {
+      box.innerHTML = "<div class=\"kv\">" + o.pairs.map((p) => "<span class=\"k\">" + esc(p[0]) + "</span><span class=\"v\">" + esc(p[1]) + "</span>").join("") + "</div>";
+    } else if (o.kind === "table") {
+      const head = "<tr>" + o.cols.map((c) => "<th>" + esc(c) + "</th>").join("") + "</tr>";
+      const row = (r) => "<tr>" + r.map((c) => "<td>" + esc(c) + "</td>").join("") + "</tr>";
+      const long = o.rows.length > 12;
+      const short = long ? o.rows.slice(0, 6).concat([o.cols.map(() => "…")], o.rows.slice(-3)) : o.rows;
+      box.innerHTML = "<div class=\"scroll\"><table class=\"tt\"><thead>" + head + "</thead><tbody>" + short.map(row).join("") + "</tbody></table></div>";
+      const info = document.createElement("div"); info.className = "more";
+      info.textContent = o.n + " ligne" + (o.n > 1 ? "s" : "") + (o.step ? ", pas de " + o.step + " min" : "") + (o.note ? " · " + o.note : "") + " ";
+      if (long) {
+        const b = document.createElement("button"); b.type = "button"; b.textContent = "tout afficher";
+        b.addEventListener("click", () => { box.querySelector(".scroll").innerHTML = "<table class=\"tt\"><thead>" + head + "</thead><tbody>" + o.rows.map(row).join("") + "</tbody></table>"; b.remove(); });
+        info.appendChild(b);
+      }
+      box.appendChild(info);
+    } else if (o.kind === "doc") {
+      expandable(box, o.id === "log/P-201" ? RP.alarms[rp.eid].log : (RP.docs[o.id] || []), 7);
+    } else {
+      expandable(box, o.lines || [], 12);
+    }
+    return box;
+  }
+  function renderCalc(s) {
+    const box = document.createElement("div"); box.className = "out";
+    const P = s.probs, lab = { bearing_wear: "usure", rtd_drift: "sonde", cooler_fouling: "refroidisseur", ambient: "local" };
+    let h = "<div class=\"probs\">" + H.map((x) => "<span>P(" + lab[x] + ") = " + P[x].toFixed(2) + "</span>").join("") + "</div>";
+    if (s.evals && s.evals.length) {
+      const name = (k) => k.replace(/[()' ]/g, "").replace("speed_step,0.9,45", "palier 90 %, 45 min").replace("speed_step,0.85,60", "palier 85 %, 60 min").replace("inspect,", "technicien : ").replace(",None", "");
+      const best = s.evals.reduce((m, e) => (e[1] + e[2] < m[1] + m[2] ? e : m), s.evals[0]);
+      const goTest = best[1] + best[2] < s.risk_now - 100;
+      h += "<div class=\"opt h\"><span>option</span><span>risque après</span><span>coût</span><span>total</span></div>";
+      h += "<div class=\"opt" + (goTest ? "" : " pick") + "\"><span>" + (goTest ? "" : "▸ ") + "agir maintenant : " + esc(s.act_now) + "</span><span>" + k$(s.risk_now) + "</span><span>0</span><span>" + k$(s.risk_now) + "</span></div>";
+      s.evals.forEach((e) => {
+        const pick = goTest && e === best;
+        h += "<div class=\"opt" + (pick ? " pick" : "") + "\"><span>" + (pick ? "▸ " : "") + esc(name(e[0])) + "</span><span>" + k$(e[1]) + "</span><span>" + k$(e[2]) + "</span><span>" + k$(e[1] + e[2]) + "</span></div>";
+      });
+    }
+    box.innerHTML = h;
+    return box;
+  }
+  function mdLite(text) {        // the final report is plain text with a little markdown
+    return esc(text).replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>");
+  }
+
+  // one timeline per run: what the agent wrote, ran and got back, plus plant-time markers
+  function timeline() {
+    const run = rpRun(), con = CON[rp.eid + "|" + rp.who];
+    if (con) {
+      const items = con.events.map((e) => Object.assign({}, e));
+      items.push({ k: "final", text: con.final, minute: items.length ? items[items.length - 1].minute : 0 });
+      return items;
+    }
+    const items = [];
+    run.steps.forEach((s, i) => {
+      if (s.kind === "calc") { items.push(Object.assign({ k: "calc" }, s)); return; }
+      const prev = i > 0 ? run.steps[i - 1].minute : 0;
+      items.push({ k: "cmd", tool: s.tool, args: s.args, minute: prev });
+      items.push({ k: "out", display: s.out, minute: s.minute });
+      if (["run_speed_step_test", "request_inspection", "submit_work_order"].indexOf(s.tool) >= 0)
+        items.push({ k: "advance", tool: s.tool, args: s.args, from: prev, minute: s.minute, charges: s.charges, running: s.running });
+    });
+    return items;
+  }
+
+  // plant panel
+  function finalMinute(run) { return run.steps.length ? run.steps[run.steps.length - 1].minute : 0; }
+  function plantValues(run, t) {
+    const al = RP.alarms[rp.eid], hst = al.hist, p = run.post;
+    const j = Math.max(0, Math.min(p.Tt.length - 1, Math.floor(t / 5) - 1)), useHist = t < 5;
+    return {
+      Tt: useHist ? hst.Tt[hst.Tt.length - 1] : p.Tt[j], To: useHist ? hst.To[hst.To.length - 1] : p.To[j],
+      Tamb: useHist ? hst.Tamb[hst.Tamb.length - 1] : p.Tamb[j],
+      rpm: useHist ? al.rpm0 : p.speed_rpm[j], flow: useHist ? al.flow0 : p.flow_m3h[j],
+    };
+  }
+  function drawPlant(run, t) {
+    const box = $("rpTrend"), W = Math.max(260, box.clientWidth || 340), Hh = 190, m = { l: 30, r: 44, t: 8, b: 20 };
+    const hst = RP.alarms[rp.eid].hist, p = run.post;
+    const x0 = -24, x1 = Math.max(1.5, finalMinute(run) / 60 + 0.4);
+    const ser = [["Tt", "s1", "Butée"], ["To", "s2", "Huile"], ["Tamb", "s3", "Local"]];
+    let lo = Infinity, hi = -Infinity;
+    ser.forEach(([c]) => { hst[c].concat(p[c]).forEach((v) => { lo = Math.min(lo, v); hi = Math.max(hi, v); }); });
+    lo = Math.floor((lo - 2) / 10) * 10; hi = Math.ceil((Math.max(hi, 74) + 1) / 10) * 10;
+    const X = (x) => m.l + (x - x0) / (x1 - x0) * (W - m.l - m.r), Y = (y) => m.t + (hi - y) / (hi - lo) * (Hh - m.t - m.b);
+    let svg = "<svg viewBox=\"0 0 " + W + " " + Hh + "\" role=\"img\" aria-label=\"Tendance P-201 pendant l'enquête\">";
+    ticks(lo, hi, 4).forEach((v) => { svg += "<line x1=\"" + m.l + "\" x2=\"" + (W - m.r) + "\" y1=\"" + Y(v) + "\" y2=\"" + Y(v) + "\" class=\"grid\"/><text x=\"" + (m.l - 5) + "\" y=\"" + (Y(v) + 4) + "\" text-anchor=\"end\">" + v + "</text>"; });
+    [-24, -12, 0].concat(x1 > 4 ? [Math.floor(x1)] : []).forEach((v) => { svg += "<text x=\"" + X(v) + "\" y=\"" + (Hh - 5) + "\" text-anchor=\"middle\">" + (v > 0 ? "+" : "") + v + " h</text>"; });
+    run.steps.forEach((s, i) => { if (s.kind === "tool" && (s.tool === "run_speed_step_test" || s.tool === "request_inspection")) {
+      const prev = i > 0 ? run.steps[i - 1].minute : 0, a = prev / 60, b = Math.min(t, s.minute) / 60;
+      if (b > a) svg += "<rect x=\"" + X(a) + "\" y=\"" + m.t + "\" width=\"" + Math.max(1.5, X(b) - X(a)) + "\" height=\"" + (Hh - m.t - m.b) + "\" class=\"" + (s.tool === "run_speed_step_test" ? "band" : "band2") + "\"/>";
+    } });
+    svg += "<line x1=\"" + m.l + "\" x2=\"" + (W - m.r) + "\" y1=\"" + Y(72) + "\" y2=\"" + Y(72) + "\" class=\"limit\"/>";
+    ser.forEach(([c, cl, lab]) => {
+      let d = hst[c].map((v, i) => (i ? "L" : "M") + X(-24 + (i + 0.5) / 6).toFixed(1) + "," + Y(v).toFixed(1)).join("");
+      let lastY = Y(hst[c][hst[c].length - 1]);
+      p[c].forEach((v, j) => { if (5 * j + 5 <= t + 0.01) { d += "L" + X((5 * j + 2.5) / 60).toFixed(1) + "," + Y(v).toFixed(1); lastY = Y(v); } });
+      svg += "<path d=\"" + d + "\" class=\"line " + cl + "\" style=\"stroke-width:1.6\"/>";
+      svg += "<text x=\"" + (W - m.r + 5) + "\" y=\"" + (lastY + 4) + "\" class=\"lbl\">" + lab + "</text>";
+    });
+    svg += "<line x1=\"" + X(t / 60) + "\" x2=\"" + X(t / 60) + "\" y1=\"" + m.t + "\" y2=\"" + (Hh - m.b) + "\" class=\"cross\" style=\"stroke-dasharray:none\"/>";
+    box.innerHTML = svg + "</svg>";
+    if (pmLive) pmLive.set(plantValues(run, t));
+    const f1 = (x) => (Math.round(x * 10) / 10).toFixed(1).replace(".", ",");
+    $("rpClock").textContent = clockAt(t).hm + " · alarme +" + (t < 60 ? Math.round(t) + " min" : f1(t / 60) + " h");
+  }
+  function setState(kind, text) { const e = $("rpState"); e.className = "state " + kind; e.textContent = text; }
+  function addCharges(list) {
+    const ul = $("rpLedger"); const empty = ul.querySelector(".empty"); if (empty && list.length) empty.remove();
+    list.forEach((c) => { const li = document.createElement("li"); li.innerHTML = "<span>" + esc(c.label) + "</span><span>" + nf.format(c.amount) + " $</span>"; ul.appendChild(li); });
+  }
+  function setTotal(x) { $("rpTotal").textContent = nf.format(x) + " $"; }
+  let follow = true;
+  function scrollTerm() { const tm = $("rpTerm"); if (follow) tm.scrollTop = tm.scrollHeight; }
+
+  function resetView() {
+    const run = rpRun(), con = CON[rp.eid + "|" + rp.who];
+    rp.i = 0; rp.t = 0; rp.done = false; rp.spent = 0; rp.items = timeline();
+    let hd = "<div class=\"hd\"># alarme P201.TT_THRUST HAUTE · " + esc(RP.alarms[rp.eid].alarm_at) + " · agent : " + esc(agentName()) + " (" + AGENT_NOTE[rp.who] + ")<br># la cause est cachée à l'agent jusqu'au bon de travail";
+    if (con) hd += "<br># durée réelle de l'enquête : " + Math.round(con.seconds / 60) + " min, rejouée ici en accéléré";
+    hd += "</div>";
+    $("rpTerm").innerHTML = hd;
+    if (con) {
+      const det = document.createElement("details"); det.className = "prompt";
+      det.innerHTML = "<summary>Consigne donnée à l'agent</summary>";
+      const pre = document.createElement("div"); pre.className = "doc"; pre.textContent = con.prompt; det.appendChild(pre);
+      $("rpTerm").appendChild(det);
+    }
+    $("rpLedger").innerHTML = "<li class=\"empty\">rien pour l'instant</li>"; setTotal(0);
+    setState("alarm", "Alarme active : butée au-dessus de 72 °C");
+    if (pmLive) pmLive.focus(null);
+    $("rpResult").hidden = true; $("rpResult").className = "rp-result";
+    drawPlant(run, 0);
+  }
+  // pacing at 1x, in ms: slow enough to read along; 2x and 4x divide these
+  const PACE = { cmdChar: 30, cmdCap: 2400, afterCmd: 600, sayChar: 26, sayCap: 6500, readPerChar: 20, readMin: 1800, readMax: 7000,
+                 outBase: 1600, outPerLine: 80, outMax: 5500, side: 2600, calc: 5000, test: 7000, inspection: 9000, final: 4500 };
+  async function typeInto(el, text, g, msPerChar, cap) {
+    if (reduced) { el.textContent = text; return; }
+    const n = text.length, dur = Math.min(cap, msPerChar * n), t0 = performance.now();
+    await new Promise((res) => {
+      function tick() {
+        if (g !== rp.gen) return res();
+        const k = Math.min(n, Math.ceil((performance.now() - t0) * rp.speed / dur * n));
+        el.innerHTML = esc(text.slice(0, k)) + (k < n ? "<span class=\"caret\">&nbsp;</span>" : "");
+        scrollTerm();
+        if (k < n) requestAnimationFrame(tick); else res();
+      }
+      tick();
+    });
+  }
+  function entry(cls, ts, mark) {
+    const ent = document.createElement("div"); ent.className = "ent " + cls;
+    ent.innerHTML = "<div class=\"ln\"><span class=\"ts\">" + clockAt(ts).hm + "</span><span class=\"pr\">" + mark + "</span><span class=\"call\"></span></div>";
+    $("rpTerm").appendChild(ent);
+    return ent;
+  }
+  let lastCmd = null;
+  async function showItem(it, animate, g) {
+    const run = rpRun();
+    if (it.k === "say" || it.k === "final") {
+      const ent = entry(it.k === "final" ? "say final" : "say", it.minute, "");
+      ent.querySelector(".pr").textContent = "";
+      const who = ent.querySelector(".call");
+      who.innerHTML = "<span class=\"who\">" + esc(agentName()) + (it.k === "final" ? " · rapport final" : "") + "</span>";
+      const txt = document.createElement("div"); txt.className = "msg"; ent.appendChild(txt);
+      if (animate && !reduced && it.k === "say") { await typeInto(txt, it.text, g, PACE.sayChar, PACE.sayCap); if (g !== rp.gen) return; }
+      txt.innerHTML = mdLite(it.text);
+      if (animate) { scrollTerm(); await wait(it.k === "final" ? PACE.final : Math.max(PACE.readMin, Math.min(PACE.readMax, PACE.readPerChar * it.text.length))); }
+      return;
+    }
+    if (it.k === "cmd") {
+      const ent = entry("", it.minute, "$"); lastCmd = ent;
+      const callEl = ent.querySelector(".call");
+      const html = it.tool ? fmtArgs(it.tool, it.args) : "<span class=\"rawcmd\">" + esc(it.raw.length > 220 ? it.raw.slice(0, 218) + "…" : it.raw) + "</span>";
+      if (animate && !reduced) {
+        const tmp = document.createElement("div"); tmp.innerHTML = html;
+        await typeInto(callEl, tmp.textContent, g, PACE.cmdChar, PACE.cmdCap); if (g !== rp.gen) return;
+      }
+      callEl.innerHTML = html;
+      if (animate) { scrollTerm(); await wait(PACE.afterCmd); }
+      return;
+    }
+    if (it.k === "out") {
+      const host = lastCmd || entry("", it.minute, "$");
+      const box = it.display ? renderDisplay(it.display) : renderDisplay({ kind: "lines", lines: it.lines || [] });
+      if (it.error) box.classList.add("err");
+      if (it.bg) box.classList.add("bgnote");
+      host.appendChild(box);
+      if (animate) { scrollTerm(); const n = it.display ? (it.display.n || (it.display.rows || []).length || 4) : (it.lines || []).length; await wait(Math.min(PACE.outMax, PACE.outBase + PACE.outPerLine * n)); }
+      return;
+    }
+    if (it.k === "side") {
+      const ent = entry("side", it.minute, "!");
+      ent.querySelector(".call").textContent = it.label + (it.error ? " · échec" : "");
+      if (it.lines && it.lines.length) ent.appendChild(renderDisplay({ kind: "lines", lines: it.lines }));
+      if (animate) { scrollTerm(); await wait(PACE.side); }
+      return;
+    }
+    if (it.k === "calc") {
+      const ent = entry("calc", it.minute, "∑");
+      ent.querySelector(".call").innerHTML = "<b>calcul</b> : probabilités et coût attendu de chaque option";
+      ent.appendChild(renderCalc(it));
+      if (animate) { scrollTerm(); await wait(PACE.calc); }
+      return;
+    }
+    if (it.k === "advance") {
+      if (it.minute > it.from) {
+        const isTest = it.tool === "run_speed_step_test";
+        setState(isTest ? "test" : "tech", isTest ? "Palier de vitesse à " + Math.round(it.args.speed_pct) + " % pendant " + it.args.duration_min + " min" : "Technicien en route : inspection " + it.args.component + " (8 h)");
+        if (pmLive) pmLive.focus(isTest ? "speed" : PM_INSPECT[it.args.component], isTest ? "test" : "tech");
+        if (animate && !reduced) {
+          const dur = (isTest ? PACE.test : PACE.inspection) / rp.speed, t0 = performance.now();
+          await new Promise((res) => {
+            function tick() {
+              if (g !== rp.gen) return res();
+              const f = Math.min(1, (performance.now() - t0) / dur);
+              rp.t = it.from + (it.minute - it.from) * f; drawPlant(run, rp.t);
+              if (f < 1) requestAnimationFrame(tick); else res();
+            }
+            tick();
+          });
+          if (g !== rp.gen) return;
+        }
+        rp.t = it.minute; drawPlant(run, rp.t);
+        setState("alarm", isTest ? "Palier terminé, retour à la vitesse nominale · alarme toujours active" : "Inspection terminée · alarme toujours active");
+        if (pmLive) pmLive.focus(null);
+      }
+      if (it.charges && it.charges.length) {
+        const host = lastCmd || entry("", it.minute, "$");
+        const c = document.createElement("div"); c.className = "out charge"; c.style.whiteSpace = "pre-wrap";
+        c.textContent = it.charges.map((x) => "+ " + nf.format(x.amount) + " $  " + x.label).join("\n");
+        host.appendChild(c); addCharges(it.charges);
+        rp.spent += it.charges.reduce((a, x) => a + x.amount, 0);
+      }
+      setTotal(rp.spent);
+      if (it.tool === "submit_work_order") {
+        setState("done", "Bon de travail émis : " + (AL[it.args.action] || it.args.action));
+        if (pmLive) pmLive.focus(PM_ACTION[it.args.action], "done");
+      }
+      if (animate) scrollTerm();
+    }
+  }
+  function showResult(run, animate) {
+    const r = run.result, box = $("rpResult");
+    const ent = entry("end", finalMinute(run), "■");
+    ent.querySelector(".call").textContent = "fin de l'épisode : cause réelle révélée";
+    if (animate) scrollTerm();
+    const cons = r.ledger.filter((e) => e.kind === "consequence");
+    box.innerHTML = "<div class=\"row1\"><span class=\"eyebrow\">Résultat</span><b>" + (AL[r.action] || r.action) + "</b>" +
+      "<span>cause réelle : " + HL[r.true_cause] + "</span>" + (r.correct ? "<span class=\"pill ok\">bonne cause</span>" : "<span class=\"pill ko\">mauvaise cause</span>") +
+      "<span class=\"num\">coût total " + k$(r.total) + "</span></div>" +
+      "<div class=\"small muted\">" + r.ledger.map((e) => esc(e.label) + " " + nf.format(e.amount) + " $").join(" · ") + "</div>" +
+      (cons.length ? "<div class=\"small\" style=\"color:var(--alarm)\">La vraie cause n'a pas été traitée : " + esc(cons[0].label.replace("True cause left unaddressed: ", "")) + ".</div>" : "");
+    box.hidden = false; if (animate && !reduced) box.className = "rp-result reveal";
+  }
+  function setPlayLabel() { $("rpPlay").textContent = rp.paused ? (rp.done ? "Rejouer" : "Lecture") : "Pause"; }
+  async function loop() {
+    const g = ++rp.gen, run = rpRun();
+    rp.loopGen = g; rp.paused = false; setPlayLabel();
+    while (rp.i < rp.items.length) {
+      if (g !== rp.gen) return;
+      await showItem(rp.items[rp.i], true, g);
+      if (g !== rp.gen) return;
+      rp.i++;
+      while (rp.paused && g === rp.gen) await new Promise((r) => setTimeout(r, 80));
+    }
+    if (g !== rp.gen) return;
+    showResult(run, true); rp.done = true; rp.paused = true; setPlayLabel();
+  }
+  function showAll() {
+    rp.gen++; resetView(); const run = rpRun();
+    rp.items.forEach((it) => { showItem(it, false, rp.gen); });
+    rp.i = rp.items.length; rp.t = finalMinute(run); drawPlant(run, rp.t);
+    showResult(run, false); rp.done = true; rp.paused = true; setPlayLabel();
+    $("rpTerm").scrollTop = 0;
+  }
+  function start() { follow = true; lastCmd = null; resetView(); loop(); }
+
+  function initReplay() {
+    const sel = $("rpAlarm");
+    sel.innerHTML = Object.keys(RP.alarms).sort().map((e) => "<option value=\"" + e + "\">" + e.replace("ep0", "") + " · " + RP.alarms[e].alarm_at + "</option>").join("");
+    sel.value = rp.eid;
+    $("rpAgent").innerHTML = AGENTS.map(([k, l]) => "<button type=\"button\" data-who=\"" + k + "\" aria-pressed=\"" + (k === rp.who) + "\">" + l + "</button>").join("");
+    $("rpSpeed").innerHTML = [1, 2, 4].map((v) => "<button type=\"button\" data-s=\"" + v + "\" aria-pressed=\"" + (v === 1) + "\">" + v + "×</button>").join("");
+    sel.addEventListener("change", () => { rp.eid = sel.value; start(); });
+    $("rpAgent").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; rp.who = b.dataset.who; $("rpAgent").querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", x === b)); start(); });
+    $("rpSpeed").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; rp.speed = +b.dataset.s; $("rpSpeed").querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", x === b)); });
+    $("rpPlay").addEventListener("click", () => {
+      if (rp.done) { start(); return; }
+      if (rp.paused) { if (rp.loopGen === rp.gen) { rp.paused = false; setPlayLabel(); } else loop(); }
+      else { rp.paused = true; setPlayLabel(); }
+    });
+    $("rpStep").addEventListener("click", async () => {
+      const run = rpRun();
+      if (rp.done) { follow = true; lastCmd = null; rp.gen++; resetView(); rp.paused = true; setPlayLabel(); return; }
+      const g = ++rp.gen; rp.paused = true; setPlayLabel();
+      if (rp.i < rp.items.length) { await showItem(rp.items[rp.i], true, g); if (g !== rp.gen) return; rp.i++; }
+      if (rp.i >= rp.items.length) { showResult(run, true); rp.done = true; setPlayLabel(); }
+    });
+    $("rpRestart").addEventListener("click", start);
+    const tm = $("rpTerm");
+    const userScroll = () => { follow = tm.scrollHeight - tm.scrollTop - tm.clientHeight < 60; };
+    tm.addEventListener("wheel", () => setTimeout(userScroll, 50), { passive: true });
+    tm.addEventListener("touchmove", () => setTimeout(userScroll, 50), { passive: true });
+    tm.addEventListener("keydown", () => setTimeout(userScroll, 50));
+    showAll();     // complete at rest; plays from the start once the section comes into view
+    if ("IntersectionObserver" in window && !reduced) {
+      const io = new IntersectionObserver((en) => { if (en.some((x) => x.isIntersecting)) { io.disconnect(); start(); } }, { threshold: 0.35 });
+      io.observe($("replay"));
+    }
+    let rz; window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => drawPlant(rpRun(), rp.t), 120); });
+  }
+
+  renderEpisode();
+  initPumpFig();
+  initReplay();
+  renderControls();
+  renderLLM();
+  renderTrend();
+  renderProbe();
+  let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { renderTrend(); renderProbe(); }, 120); });
+})();
+</script>

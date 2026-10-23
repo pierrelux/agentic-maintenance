@@ -1,0 +1,2009 @@
+{
+ "ep05001": {
+  "seed": 5001,
+  "prefix": [
+   {
+    "tool": "get_alarm",
+    "args": {},
+    "at": "2026-10-16 10:44",
+    "summary": "Alarm Tt 73.0 C at 2026-10-16 10:44"
+   }
+  ],
+  "runs": {
+   "haiku": {
+    "model_id": "claude-haiku-5-5",
+    "calls": [
+     {
+      "tool": "get_alarm",
+      "args": {},
+      "at": "2026-10-16 10:44",
+      "summary": "Alarm Tt 73.0 C at 2026-10-16 10:44"
+     },
+     {
+      "tool": "list_tags",
+      "args": {},
+      "at": "2026-10-16 10:44",
+      "summary": "listed tags"
+     },
+     {
+      "tool": "list_documents",
+      "args": {},
+      "at": "2026-10-16 10:44",
+      "summary": "listed documents"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/troubleshooting"
+      },
+      "at": "2026-10-16 10:44",
+      "summary": "read manual/troubleshooting"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/specs"
+      },
+      "at": "2026-10-16 10:44",
+      "summary": "read manual/specs"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/thermal"
+      },
+      "at": "2026-10-16 10:44",
+      "summary": "read manual/thermal"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/tests"
+      },
+      "at": "2026-10-16 10:44",
+      "summary": "read manual/tests"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-16 10:44",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "kb/p201-family"
+      },
+      "at": "2026-10-16 10:44",
+      "summary": "read kb/p201-family"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/instrumentation"
+      },
+      "at": "2026-10-16 10:44",
+      "summary": "read manual/instrumentation"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM",
+        "P201.SPEED",
+        "P201.FLOW"
+       ],
+       "hours": 48,
+       "step_min": 60
+      },
+      "at": "2026-10-16 10:44",
+      "summary": "48 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM, P201.SPEED, P201.FLOW"
+     },
+     {
+      "tool": "run_speed_step_test",
+      "args": {
+       "speed_pct": 90.0,
+       "duration_min": 45
+      },
+      "at": "2026-10-16 11:29",
+      "summary": "Tt 72.83 -> 65.91 C, cost 1,348 $"
+     },
+     {
+      "tool": "submit_work_order",
+      "args": {
+       "action": "replace_bearing",
+       "diagnosis": "Degradation progressive du roulement de butee du P-201 (frottement accru, usure ou rupture du film lubrifiant). Ecart Tt-ambiant passe de 45 C a 54 C en 48 h (reference 44 C), avec acceleration depuis environ 4 h. Test de vitesse 90 % sur 45 min : Tt chute de 6,9 C, au-dessus de la reponse nominale (environ 6 C), donc frottement accru et non derive de sonde. Huile (+7 C) et palier radial (+6 C) montent seulement depuis environ 4 h : composante refroidisseur possible en second lieu. Ambiant exclu, car les ecarts a ambiant ont change pour les trois capteurs. Hausse legere cote butee deja notee au journal le 2026-10-07."
+      },
+      "at": "2026-10-16 11:29",
+      "summary": "correct=True"
+     }
+    ],
+    "action": "replace_bearing",
+    "total_cost_cad": 29460
+   },
+   "sonnet": {
+    "model_id": "claude-sonnet-5-5",
+    "calls": [
+     {
+      "tool": "get_alarm",
+      "args": {},
+      "at": "2026-10-16 10:44",
+      "summary": "Alarm Tt 73.0 C at 2026-10-16 10:44"
+     },
+     {
+      "tool": "list_tags",
+      "args": {},
+      "at": "2026-10-16 10:44",
+      "summary": "listed tags"
+     },
+     {
+      "tool": "list_documents",
+      "args": {},
+      "at": "2026-10-16 10:44",
+      "summary": "listed documents"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/specs"
+      },
+      "at": "2026-10-16 10:44",
+      "summary": "read manual/specs"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/thermal"
+      },
+      "at": "2026-10-16 10:44",
+      "summary": "read manual/thermal"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/troubleshooting"
+      },
+      "at": "2026-10-16 10:44",
+      "summary": "read manual/troubleshooting"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/tests"
+      },
+      "at": "2026-10-16 10:44",
+      "summary": "read manual/tests"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/instrumentation"
+      },
+      "at": "2026-10-16 10:44",
+      "summary": "read manual/instrumentation"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "kb/p201-family"
+      },
+      "at": "2026-10-16 10:44",
+      "summary": "read kb/p201-family"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM",
+        "P201.SPEED",
+        "P201.FLOW"
+       ],
+       "hours": 48,
+       "step_min": 60
+      },
+      "at": "2026-10-16 10:44",
+      "summary": "48 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM, P201.SPEED, P201.FLOW"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-16 10:44",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-16 10:44",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM"
+       ],
+       "hours": 8,
+       "step_min": 20
+      },
+      "at": "2026-10-16 10:44",
+      "summary": "24 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM"
+     },
+     {
+      "tool": "request_inspection",
+      "args": {
+       "component": "oil_cooler"
+      },
+      "at": "2026-10-16 18:44",
+      "summary": "{'finding': 'significant fouling on water side', 'completed_at': '2026-10-16 18:44'}"
+     },
+     {
+      "tool": "submit_work_order",
+      "args": {
+       "action": "clean_cooler",
+       "diagnosis": "Encrassement cote eau du refroidisseur d huile de P-201 (cause 2 du manuel). Alarme Tt haute secondaire a la hausse de temperature d huile; ambiance normale (18 C), pas de defaut de roulement de butee demontre."
+      },
+      "at": "2026-10-16 18:44",
+      "summary": "correct=False"
+     }
+    ],
+    "action": "clean_cooler",
+    "total_cost_cad": 270000
+   }
+  }
+ },
+ "ep05002": {
+  "seed": 5002,
+  "prefix": [
+   {
+    "tool": "get_alarm",
+    "args": {},
+    "at": "2026-10-16 09:26",
+    "summary": "Alarm Tt 72.1 C at 2026-10-16 09:26"
+   }
+  ],
+  "runs": {
+   "haiku": {
+    "model_id": "claude-haiku-5-5",
+    "calls": [
+     {
+      "tool": "get_alarm",
+      "args": {},
+      "at": "2026-10-16 09:26",
+      "summary": "Alarm Tt 72.1 C at 2026-10-16 09:26"
+     },
+     {
+      "tool": "list_tags",
+      "args": {},
+      "at": "2026-10-16 09:26",
+      "summary": "listed tags"
+     },
+     {
+      "tool": "list_documents",
+      "args": {},
+      "at": "2026-10-16 09:26",
+      "summary": "listed documents"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM",
+        "P201.SPEED",
+        "P201.FLOW"
+       ],
+       "hours": 48,
+       "step_min": 60
+      },
+      "at": "2026-10-16 09:26",
+      "summary": "48 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM, P201.SPEED, P201.FLOW"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/troubleshooting"
+      },
+      "at": "2026-10-16 09:26",
+      "summary": "read manual/troubleshooting"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-16 09:26",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/tests"
+      },
+      "at": "2026-10-16 09:26",
+      "summary": "read manual/tests"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/thermal"
+      },
+      "at": "2026-10-16 09:26",
+      "summary": "read manual/thermal"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/instrumentation"
+      },
+      "at": "2026-10-16 09:26",
+      "summary": "read manual/instrumentation"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "kb/p201-family"
+      },
+      "at": "2026-10-16 09:26",
+      "summary": "read kb/p201-family"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/specs"
+      },
+      "at": "2026-10-16 09:26",
+      "summary": "read manual/specs"
+     },
+     {
+      "tool": "run_speed_step_test",
+      "args": {
+       "speed_pct": 90.0,
+       "duration_min": 45
+      },
+      "at": "2026-10-16 10:11",
+      "summary": "Tt 72.18 -> 67.27 C, cost 1,368 $"
+     },
+     {
+      "tool": "submit_work_order",
+      "args": {
+       "action": "replace_rtd",
+       "diagnosis": "Derive de la sonde RTD du palier de butee (Tt) : offset d’environ +11 °C. Temperature reelle estimee du palier : environ 61 °C (ambiant + 44 °C, conforme a la specification). Roulement non en cause : chute au test de vitesse 90 % / 45 min de 4,9 °C, inferieure a la chute nominale attendue (~6 °C) et bien en dessous des 7 a 8 °C attendus pour un roulement a friction accrue. Huile et palier radial sans hausse par rapport a l’ambiant."
+      },
+      "at": "2026-10-16 10:11",
+      "summary": "correct=True"
+     }
+    ],
+    "action": "replace_rtd",
+    "total_cost_cad": 2981
+   },
+   "sonnet": {
+    "model_id": "claude-sonnet-5-5",
+    "calls": [
+     {
+      "tool": "get_alarm",
+      "args": {},
+      "at": "2026-10-16 09:26",
+      "summary": "Alarm Tt 72.1 C at 2026-10-16 09:26"
+     },
+     {
+      "tool": "list_tags",
+      "args": {},
+      "at": "2026-10-16 09:26",
+      "summary": "listed tags"
+     },
+     {
+      "tool": "list_documents",
+      "args": {},
+      "at": "2026-10-16 09:26",
+      "summary": "listed documents"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/specs"
+      },
+      "at": "2026-10-16 09:26",
+      "summary": "read manual/specs"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/thermal"
+      },
+      "at": "2026-10-16 09:26",
+      "summary": "read manual/thermal"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/troubleshooting"
+      },
+      "at": "2026-10-16 09:26",
+      "summary": "read manual/troubleshooting"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/tests"
+      },
+      "at": "2026-10-16 09:26",
+      "summary": "read manual/tests"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/instrumentation"
+      },
+      "at": "2026-10-16 09:26",
+      "summary": "read manual/instrumentation"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "kb/p201-family"
+      },
+      "at": "2026-10-16 09:26",
+      "summary": "read kb/p201-family"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM",
+        "P201.SPEED",
+        "P201.FLOW"
+       ],
+       "hours": 48,
+       "step_min": 120
+      },
+      "at": "2026-10-16 09:26",
+      "summary": "24 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM, P201.SPEED, P201.FLOW"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-16 09:26",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "request_inspection",
+      "args": {
+       "component": "rtd_loop"
+      },
+      "at": "2026-10-16 17:26",
+      "summary": "{'rtd_minus_reference_C': 16.4, 'note': 'loop check against reference probe, +/- 0.4 C', 'completed_at': '2026-10-16 17:26'}"
+     },
+     {
+      "tool": "submit_work_order",
+      "args": {
+       "action": "replace_rtd",
+       "diagnosis": "Derive de la sonde RTD de la butee P201.TT_THRUST (decalage positif lent et regulier). Le roulement de butee, le refroidisseur d huile et la temperature ambiante ne sont pas en cause."
+      },
+      "at": "2026-10-16 17:26",
+      "summary": "correct=True"
+     }
+    ],
+    "action": "replace_rtd",
+    "total_cost_cad": 4500
+   }
+  }
+ },
+ "ep05003": {
+  "seed": 5003,
+  "prefix": [],
+  "runs": {
+   "haiku": {
+    "model_id": "claude-haiku-5-5",
+    "calls": [
+     {
+      "tool": "get_alarm",
+      "args": {},
+      "at": "2026-10-14 13:31",
+      "summary": "Alarm Tt 72.7 C at 2026-10-14 13:31"
+     },
+     {
+      "tool": "list_tags",
+      "args": {},
+      "at": "2026-10-14 13:31",
+      "summary": "listed tags"
+     },
+     {
+      "tool": "list_documents",
+      "args": {},
+      "at": "2026-10-14 13:31",
+      "summary": "listed documents"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/troubleshooting"
+      },
+      "at": "2026-10-14 13:31",
+      "summary": "read manual/troubleshooting"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-14 13:31",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM",
+        "P201.SPEED",
+        "P201.FLOW"
+       ],
+       "hours": 48,
+       "step_min": 60
+      },
+      "at": "2026-10-14 13:31",
+      "summary": "48 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM, P201.SPEED, P201.FLOW"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/tests"
+      },
+      "at": "2026-10-14 13:31",
+      "summary": "read manual/tests"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/thermal"
+      },
+      "at": "2026-10-14 13:31",
+      "summary": "read manual/thermal"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "kb/p201-family"
+      },
+      "at": "2026-10-14 13:31",
+      "summary": "read kb/p201-family"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/instrumentation"
+      },
+      "at": "2026-10-14 13:31",
+      "summary": "read manual/instrumentation"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/specs"
+      },
+      "at": "2026-10-14 13:31",
+      "summary": "read manual/specs"
+     },
+     {
+      "tool": "run_speed_step_test",
+      "args": {
+       "speed_pct": 90.0,
+       "duration_min": 45
+      },
+      "at": "2026-10-14 14:16",
+      "summary": "Tt 72.66 -> 66.99 C, cost 1,344 $"
+     },
+     {
+      "tool": "request_inspection",
+      "args": {
+       "component": "rtd_loop"
+      },
+      "at": "2026-10-14 22:16",
+      "summary": "{'rtd_minus_reference_C': 8.3, 'note': 'loop check against reference probe, +/- 0.4 C', 'completed_at': '2026-10-14 22:16'}"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM",
+        "P201.SPEED",
+        "P201.FLOW"
+       ],
+       "hours": 9,
+       "step_min": 60
+      },
+      "at": "2026-10-14 22:16",
+      "summary": "9 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM, P201.SPEED, P201.FLOW"
+     },
+     {
+      "tool": "submit_work_order",
+      "args": {
+       "action": "replace_rtd",
+       "diagnosis": "Sonde RTD de butée P201.TT_THRUST défectueuse : dérive de +8,3 °C confirmée par le contrôle de boucle contre la référence (tolérance +/- 0,4 °C). Remplacer la sonde, vérifier et assécher la boîte de jonction (humidité signalée le 16 septembre), resserrer ou remplacer le presse-étoupe, puis valider la boucle. Le roulement de butée est en bon état, ne pas le remplacer."
+      },
+      "at": "2026-10-14 22:16",
+      "summary": "correct=True"
+     }
+    ],
+    "action": "replace_rtd",
+    "total_cost_cad": 5956
+   },
+   "sonnet": {
+    "model_id": "claude-sonnet-5-5",
+    "calls": [
+     {
+      "tool": "get_alarm",
+      "args": {},
+      "at": "2026-10-14 13:31",
+      "summary": "Alarm Tt 72.7 C at 2026-10-14 13:31"
+     },
+     {
+      "tool": "list_tags",
+      "args": {},
+      "at": "2026-10-14 13:31",
+      "summary": "listed tags"
+     },
+     {
+      "tool": "list_documents",
+      "args": {},
+      "at": "2026-10-14 13:31",
+      "summary": "listed documents"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/specs"
+      },
+      "at": "2026-10-14 13:31",
+      "summary": "read manual/specs"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/thermal"
+      },
+      "at": "2026-10-14 13:31",
+      "summary": "read manual/thermal"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/troubleshooting"
+      },
+      "at": "2026-10-14 13:31",
+      "summary": "read manual/troubleshooting"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/tests"
+      },
+      "at": "2026-10-14 13:31",
+      "summary": "read manual/tests"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/instrumentation"
+      },
+      "at": "2026-10-14 13:31",
+      "summary": "read manual/instrumentation"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "kb/p201-family"
+      },
+      "at": "2026-10-14 13:31",
+      "summary": "read kb/p201-family"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-14 13:31",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM",
+        "P201.SPEED",
+        "P201.FLOW"
+       ],
+       "hours": 48,
+       "step_min": 60
+      },
+      "at": "2026-10-14 13:31",
+      "summary": "48 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM, P201.SPEED, P201.FLOW"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_OIL",
+        "P201.TT_ROOM",
+        "P201.SPEED",
+        "P201.FLOW"
+       ],
+       "hours": 2,
+       "step_min": 10
+      },
+      "at": "2026-10-14 13:31",
+      "summary": "12 rows of P201.TT_THRUST, P201.TT_OIL, P201.TT_ROOM, P201.SPEED, P201.FLOW"
+     },
+     {
+      "tool": "run_speed_step_test",
+      "args": {
+       "speed_pct": 90.0,
+       "duration_min": 45
+      },
+      "at": "2026-10-14 14:16",
+      "summary": "Tt 72.66 -> 66.99 C, cost 1,344 $"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_OIL",
+        "P201.TT_RADIAL",
+        "P201.TT_ROOM",
+        "P201.SPEED"
+       ],
+       "hours": 2,
+       "step_min": 5
+      },
+      "at": "2026-10-14 14:16",
+      "summary": "24 rows of P201.TT_THRUST, P201.TT_OIL, P201.TT_RADIAL, P201.TT_ROOM, P201.SPEED"
+     },
+     {
+      "tool": "submit_work_order",
+      "args": {
+       "action": "replace_rtd",
+       "diagnosis": "Offset/drift of about +7 C on the thrust bearing RTD (P201.TT_THRUST), most likely moisture in the RTD junction box (found wet on 2026-09-16, P-201 already had RTD drift in 2024). The thrust bearing itself is thermally nominal. Not ambient, not oil cooler fouling."
+      },
+      "at": "2026-10-14 14:16",
+      "summary": "correct=True"
+     }
+    ],
+    "action": "replace_rtd",
+    "total_cost_cad": 2956
+   }
+  }
+ },
+ "ep05004": {
+  "seed": 5004,
+  "prefix": [],
+  "runs": {
+   "haiku": {
+    "model_id": "claude-haiku-5-5",
+    "calls": [
+     {
+      "tool": "get_alarm",
+      "args": {},
+      "at": "2026-10-15 23:44",
+      "summary": "Alarm Tt 72.3 C at 2026-10-15 23:44"
+     },
+     {
+      "tool": "list_tags",
+      "args": {},
+      "at": "2026-10-15 23:44",
+      "summary": "listed tags"
+     },
+     {
+      "tool": "list_documents",
+      "args": {},
+      "at": "2026-10-15 23:44",
+      "summary": "listed documents"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/troubleshooting"
+      },
+      "at": "2026-10-15 23:44",
+      "summary": "read manual/troubleshooting"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/tests"
+      },
+      "at": "2026-10-15 23:44",
+      "summary": "read manual/tests"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/thermal"
+      },
+      "at": "2026-10-15 23:44",
+      "summary": "read manual/thermal"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/instrumentation"
+      },
+      "at": "2026-10-15 23:44",
+      "summary": "read manual/instrumentation"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/specs"
+      },
+      "at": "2026-10-15 23:44",
+      "summary": "read manual/specs"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-15 23:44",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "kb/p201-family"
+      },
+      "at": "2026-10-15 23:44",
+      "summary": "read kb/p201-family"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM",
+        "P201.SPEED",
+        "P201.FLOW"
+       ],
+       "hours": 48,
+       "step_min": 60
+      },
+      "at": "2026-10-15 23:44",
+      "summary": "48 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM, P201.SPEED, P201.FLOW"
+     },
+     {
+      "tool": "request_inspection",
+      "args": {
+       "component": "thrust_bearing"
+      },
+      "at": "2026-10-16 07:44",
+      "summary": "{'ir_housing_C': 72.1, 'rtd_reading_C': 73.6, 'vibration': 'elevated at bearing defect frequency', 'note': 'IR on housing reads ~2 C below the bearing (+/- 1 C).', 'completed_at': '2026-10-16 07:44'}"
+     },
+     {
+      "tool": "submit_work_order",
+      "args": {
+       "action": "replace_bearing",
+       "diagnosis": "Degradation du roulement de butee de P-201. La temperature reelle du palier est elevee (IR boitier 72,1 C, soit environ 74 C au palier, RTD 73,6 C concordant) et les vibrations sont elevees a la frequence de defaut du roulement. Derive de sonde RTD exclue car IR et RTD concordent. Refroidisseur encrasse peu probable: Tt monte d environ 3,5 a 4 C par jour pendant que l huile ne monte que d environ 0,7 C par jour, signature de friction de butee."
+      },
+      "at": "2026-10-16 07:44",
+      "summary": "correct=True"
+     }
+    ],
+    "action": "replace_bearing",
+    "total_cost_cad": 31000
+   },
+   "sonnet": {
+    "model_id": "claude-sonnet-5-5",
+    "calls": [
+     {
+      "tool": "get_alarm",
+      "args": {},
+      "at": "2026-10-15 23:44",
+      "summary": "Alarm Tt 72.3 C at 2026-10-15 23:44"
+     },
+     {
+      "tool": "list_tags",
+      "args": {},
+      "at": "2026-10-15 23:44",
+      "summary": "listed tags"
+     },
+     {
+      "tool": "list_documents",
+      "args": {},
+      "at": "2026-10-15 23:44",
+      "summary": "listed documents"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/specs"
+      },
+      "at": "2026-10-15 23:44",
+      "summary": "read manual/specs"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/thermal"
+      },
+      "at": "2026-10-15 23:44",
+      "summary": "read manual/thermal"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/troubleshooting"
+      },
+      "at": "2026-10-15 23:44",
+      "summary": "read manual/troubleshooting"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/tests"
+      },
+      "at": "2026-10-15 23:44",
+      "summary": "read manual/tests"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/instrumentation"
+      },
+      "at": "2026-10-15 23:44",
+      "summary": "read manual/instrumentation"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "kb/p201-family"
+      },
+      "at": "2026-10-15 23:44",
+      "summary": "read kb/p201-family"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-15 23:44",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM",
+        "P201.SPEED",
+        "P201.FLOW"
+       ],
+       "hours": 48,
+       "step_min": 60
+      },
+      "at": "2026-10-15 23:44",
+      "summary": "48 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM, P201.SPEED, P201.FLOW"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM"
+       ],
+       "hours": 6,
+       "step_min": 15
+      },
+      "at": "2026-10-15 23:44",
+      "summary": "24 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM"
+     },
+     {
+      "tool": "request_inspection",
+      "args": {
+       "component": "thrust_bearing"
+      },
+      "at": "2026-10-16 07:44",
+      "summary": "{'ir_housing_C': 72.1, 'rtd_reading_C': 73.6, 'vibration': 'elevated at bearing defect frequency', 'note': 'IR on housing reads ~2 C below the bearing (+/- 1 C).', 'completed_at': '2026-10-16 07:44'}"
+     },
+     {
+      "tool": "submit_work_order",
+      "args": {
+       "action": "replace_bearing",
+       "diagnosis": "Degradation reelle du roulement de butee de P-201 (friction accrue). Tt a derive d environ +6.5 C en 40 h au-dessus de la reference ambiante+44 C, tendance lineaire, non expliquee par la temperature ambiante ni par l huile (huile et radial suivent simplement le cycle quotidien de l eau de refroidissement; refroidisseur ecarte car il faudrait environ +14 C d huile pour expliquer la hausse de Tt). Inspection technicien du quart suivant: IR boitier 72.1 C (soit environ 74 C au roulement) en accord avec la sonde RTD (73.6 C), donc la sonde n est pas en derive; vibration elevee a la frequence de defaut du roulement."
+      },
+      "at": "2026-10-16 07:44",
+      "summary": "correct=True"
+     }
+    ],
+    "action": "replace_bearing",
+    "total_cost_cad": 31000
+   }
+  }
+ },
+ "ep05005": {
+  "seed": 5005,
+  "prefix": [],
+  "runs": {
+   "haiku": {
+    "model_id": "claude-haiku-5-5",
+    "calls": [
+     {
+      "tool": "get_alarm",
+      "args": {},
+      "at": "2026-10-15 11:45",
+      "summary": "Alarm Tt 72.0 C at 2026-10-15 11:45"
+     },
+     {
+      "tool": "list_tags",
+      "args": {},
+      "at": "2026-10-15 11:45",
+      "summary": "listed tags"
+     },
+     {
+      "tool": "list_documents",
+      "args": {},
+      "at": "2026-10-15 11:45",
+      "summary": "listed documents"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM",
+        "P201.SPEED",
+        "P201.FLOW"
+       ],
+       "hours": 48,
+       "step_min": 60
+      },
+      "at": "2026-10-15 11:45",
+      "summary": "48 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM, P201.SPEED, P201.FLOW"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/troubleshooting"
+      },
+      "at": "2026-10-15 11:45",
+      "summary": "read manual/troubleshooting"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-15 11:45",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/specs"
+      },
+      "at": "2026-10-15 11:45",
+      "summary": "read manual/specs"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/thermal"
+      },
+      "at": "2026-10-15 11:45",
+      "summary": "read manual/thermal"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/tests"
+      },
+      "at": "2026-10-15 11:45",
+      "summary": "read manual/tests"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/instrumentation"
+      },
+      "at": "2026-10-15 11:45",
+      "summary": "read manual/instrumentation"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "kb/p201-family"
+      },
+      "at": "2026-10-15 11:45",
+      "summary": "read kb/p201-family"
+     },
+     {
+      "tool": "request_inspection",
+      "args": {
+       "component": "thrust_bearing"
+      },
+      "at": "2026-10-15 19:45",
+      "summary": "{'ir_housing_C': 73.4, 'rtd_reading_C': 74.6, 'vibration': 'elevated at bearing defect frequency', 'note': 'IR on housing reads ~2 C below the bearing (+/- 1 C).', 'completed_at': '2026-10-15 19:45'}"
+     },
+     {
+      "tool": "submit_work_order",
+      "args": {
+       "action": "replace_bearing",
+       "diagnosis": "Usure du roulement de butee de P-201 (friction accrue). Sonde Tt validee par inspection : IR boitier 73,4 C (roulement environ 75 C, +/- 1 C) contre RTD 74,6 C, donc pas de derive de sonde. Vibrations elevees a la frequence de defaut du roulement. Refroidisseur d huile et ambiance exclus."
+      },
+      "at": "2026-10-15 19:45",
+      "summary": "correct=True"
+     }
+    ],
+    "action": "replace_bearing",
+    "total_cost_cad": 31000
+   },
+   "sonnet": {
+    "model_id": "claude-sonnet-5-5",
+    "calls": [
+     {
+      "tool": "get_alarm",
+      "args": {},
+      "at": "2026-10-15 11:45",
+      "summary": "Alarm Tt 72.0 C at 2026-10-15 11:45"
+     },
+     {
+      "tool": "list_tags",
+      "args": {},
+      "at": "2026-10-15 11:45",
+      "summary": "listed tags"
+     },
+     {
+      "tool": "list_documents",
+      "args": {},
+      "at": "2026-10-15 11:45",
+      "summary": "listed documents"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/specs"
+      },
+      "at": "2026-10-15 11:45",
+      "summary": "read manual/specs"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/thermal"
+      },
+      "at": "2026-10-15 11:45",
+      "summary": "read manual/thermal"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/troubleshooting"
+      },
+      "at": "2026-10-15 11:45",
+      "summary": "read manual/troubleshooting"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/tests"
+      },
+      "at": "2026-10-15 11:45",
+      "summary": "read manual/tests"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/instrumentation"
+      },
+      "at": "2026-10-15 11:45",
+      "summary": "read manual/instrumentation"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "kb/p201-family"
+      },
+      "at": "2026-10-15 11:45",
+      "summary": "read kb/p201-family"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-15 11:45",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM",
+        "P201.SPEED",
+        "P201.FLOW"
+       ],
+       "hours": 48,
+       "step_min": 60
+      },
+      "at": "2026-10-15 11:45",
+      "summary": "48 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM, P201.SPEED, P201.FLOW"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM"
+       ],
+       "hours": 6,
+       "step_min": 10
+      },
+      "at": "2026-10-15 11:45",
+      "summary": "36 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM"
+     },
+     {
+      "tool": "request_inspection",
+      "args": {
+       "component": "thrust_bearing"
+      },
+      "at": "2026-10-15 19:45",
+      "summary": "{'ir_housing_C': 73.4, 'rtd_reading_C': 74.6, 'vibration': 'elevated at bearing defect frequency', 'note': 'IR on housing reads ~2 C below the bearing (+/- 1 C).', 'completed_at': '2026-10-15 19:45'}"
+     },
+     {
+      "tool": "submit_work_order",
+      "args": {
+       "action": "replace_bearing",
+       "diagnosis": "Degradation du roulement de butee de P-201 (frottement accru). Tt = ambiante + ~51 C contre 44 C normal, avec une montee lisse d environ 0,15-0,2 C/h depuis le 14 oct. midi. Ambiance normale (17-22 C), refroidisseur d huile non en cause (huile +3,8 C seulement, Tt monte bien plus que 0,45 x la hausse d huile). Inspection technicien : IR boitier 73,4 C (butee ~75,4 C) en accord avec la sonde RTD 74,6 C, donc pas de derive de sonde ; vibration elevee a la frequence de defaut du roulement. Bruit cote butee deja signale le 2026-10-04."
+      },
+      "at": "2026-10-15 19:45",
+      "summary": "correct=True"
+     }
+    ],
+    "action": "replace_bearing",
+    "total_cost_cad": 31000
+   }
+  }
+ },
+ "ep05006": {
+  "seed": 5006,
+  "prefix": [],
+  "runs": {
+   "haiku": {
+    "model_id": "claude-haiku-5-5",
+    "calls": [
+     {
+      "tool": "get_alarm",
+      "args": {},
+      "at": "2026-10-14 20:44",
+      "summary": "Alarm Tt 72.7 C at 2026-10-14 20:44"
+     },
+     {
+      "tool": "list_tags",
+      "args": {},
+      "at": "2026-10-14 20:44",
+      "summary": "listed tags"
+     },
+     {
+      "tool": "list_documents",
+      "args": {},
+      "at": "2026-10-14 20:44",
+      "summary": "listed documents"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/troubleshooting"
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "read manual/troubleshooting"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/specs"
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "read manual/specs"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/thermal"
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "read manual/thermal"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/tests"
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "read manual/tests"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/instrumentation"
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "read manual/instrumentation"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "kb/p201-family"
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "read kb/p201-family"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM",
+        "P201.SPEED",
+        "P201.FLOW"
+       ],
+       "hours": 48,
+       "step_min": 60
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "48 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM, P201.SPEED, P201.FLOW"
+     },
+     {
+      "tool": "submit_work_order",
+      "args": {
+       "action": "monitor",
+       "diagnosis": "Alarme Tt haute causée par la hausse de la température ambiante du local de pompes (d’environ 16 °C à 27,7 °C le 14 octobre), sans défaut de P-201. Tt, Tr et l’huile suivent l’ambiant avec des écarts nominaux."
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "correct=True"
+     }
+    ],
+    "action": "monitor",
+    "total_cost_cad": 0
+   },
+   "sonnet": {
+    "model_id": "claude-sonnet-5-5",
+    "calls": [
+     {
+      "tool": "get_alarm",
+      "args": {},
+      "at": "2026-10-14 20:44",
+      "summary": "Alarm Tt 72.7 C at 2026-10-14 20:44"
+     },
+     {
+      "tool": "list_tags",
+      "args": {},
+      "at": "2026-10-14 20:44",
+      "summary": "listed tags"
+     },
+     {
+      "tool": "list_documents",
+      "args": {},
+      "at": "2026-10-14 20:44",
+      "summary": "listed documents"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/specs"
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "read manual/specs"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/thermal"
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "read manual/thermal"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/troubleshooting"
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "read manual/troubleshooting"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/tests"
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "read manual/tests"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/instrumentation"
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "read manual/instrumentation"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "kb/p201-family"
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "read kb/p201-family"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM",
+        "P201.SPEED",
+        "P201.FLOW"
+       ],
+       "hours": 48,
+       "step_min": 60
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "48 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM, P201.SPEED, P201.FLOW"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "submit_work_order",
+      "args": {
+       "action": "monitor",
+       "diagnosis": "High ambient temperature in the pump room (exhaust fan VF-3 failed since 2026-10-04), not a pump fault. At the alarm, Tt-ambient = 44.4 C, Tr-ambient = 38.4 C, oil-ambient = 29.5 C, all within OEM normal (44+/-2, 38+/-2, 29+/-3). Tt, Tr and oil rise together with the room (diurnal cycle plus a sustained rise from 16 C to 27.7 C over 18 h), so no bearing friction increase, no oil cooler fouling and no thrust RTD drift."
+      },
+      "at": "2026-10-14 20:44",
+      "summary": "correct=True"
+     }
+    ],
+    "action": "monitor",
+    "total_cost_cad": 0
+   }
+  }
+ },
+ "ep05007": {
+  "seed": 5007,
+  "prefix": [],
+  "runs": {
+   "haiku": {
+    "model_id": "claude-haiku-5-5",
+    "calls": [
+     {
+      "tool": "get_alarm",
+      "args": {},
+      "at": "2026-10-14 13:37",
+      "summary": "Alarm Tt 72.1 C at 2026-10-14 13:37"
+     },
+     {
+      "tool": "list_tags",
+      "args": {},
+      "at": "2026-10-14 13:37",
+      "summary": "listed tags"
+     },
+     {
+      "tool": "list_documents",
+      "args": {},
+      "at": "2026-10-14 13:37",
+      "summary": "listed documents"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/troubleshooting"
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "read manual/troubleshooting"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/specs"
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "read manual/specs"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/tests"
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "read manual/tests"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM",
+        "P201.SPEED",
+        "P201.FLOW"
+       ],
+       "hours": 48,
+       "step_min": 60
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "48 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM, P201.SPEED, P201.FLOW"
+     },
+     {
+      "tool": "search_documents",
+      "args": {
+       "query": "thrust bearing temperature RTD ambient ventilation"
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "3 hits"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/thermal"
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "read manual/thermal"
+     },
+     {
+      "tool": "submit_work_order",
+      "args": {
+       "action": "monitor",
+       "diagnosis": "Alarme Tt P201 (72,1 C, seuil 72 C) causee par la hausse de la temperature ambiante du local de pompes (17,5 C le 13 oct. a 28,2 C maintenant), liee a la panne du ventilateur d extraction VF-3 (bon de travail toujours ouvert depuis le 10 oct.). Tt moins ambiante reste entre 44 et 46 C, soit la valeur nominale (44 +/- 2 C) : pas de dérive progressive, donc pas de friction croissante du palier de butee. Huile (To moins ambiante = 25 a 31 C, nominal 29 +/- 3) et Tr suivent l ambiante : pas d encrassement du refroidisseur d huile ni de defaut de RTD. Vitesse (3540 tr/min) et debit (~397 m3/h) constants sur 48 h."
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "correct=True"
+     }
+    ],
+    "action": "monitor",
+    "total_cost_cad": 0
+   },
+   "sonnet": {
+    "model_id": "claude-sonnet-5-5",
+    "calls": [
+     {
+      "tool": "get_alarm",
+      "args": {},
+      "at": "2026-10-14 13:37",
+      "summary": "Alarm Tt 72.1 C at 2026-10-14 13:37"
+     },
+     {
+      "tool": "list_tags",
+      "args": {},
+      "at": "2026-10-14 13:37",
+      "summary": "listed tags"
+     },
+     {
+      "tool": "list_documents",
+      "args": {},
+      "at": "2026-10-14 13:37",
+      "summary": "listed documents"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/specs"
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "read manual/specs"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/thermal"
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "read manual/thermal"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/troubleshooting"
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "read manual/troubleshooting"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/tests"
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "read manual/tests"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/instrumentation"
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "read manual/instrumentation"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "kb/p201-family"
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "read kb/p201-family"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM",
+        "P201.SPEED",
+        "P201.FLOW"
+       ],
+       "hours": 48,
+       "step_min": 60
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "48 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM, P201.SPEED, P201.FLOW"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM"
+       ],
+       "hours": 6,
+       "step_min": 30
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "12 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM"
+     },
+     {
+      "tool": "submit_work_order",
+      "args": {
+       "action": "monitor",
+       "diagnosis": "High ambient in the pump room after failure of the room exhaust fan VF-3 (breaker open since 2026-10-10). Room temperature rose from 17.5 C to 28.3 C over about 32 h and Tt, Tr and oil followed it. Tt minus ambient is 43.8 C, within the OEM normal band of 44 +/- 2 C, so there is no pump, bearing, RTD or cooler fault."
+      },
+      "at": "2026-10-14 13:37",
+      "summary": "correct=True"
+     }
+    ],
+    "action": "monitor",
+    "total_cost_cad": 0
+   }
+  }
+ },
+ "ep05008": {
+  "seed": 5008,
+  "prefix": [],
+  "runs": {
+   "haiku": {
+    "model_id": "claude-haiku-5-5",
+    "calls": [
+     {
+      "tool": "get_alarm",
+      "args": {},
+      "at": "2026-10-14 13:36",
+      "summary": "Alarm Tt 72.6 C at 2026-10-14 13:36"
+     },
+     {
+      "tool": "list_tags",
+      "args": {},
+      "at": "2026-10-14 13:36",
+      "summary": "listed tags"
+     },
+     {
+      "tool": "list_documents",
+      "args": {},
+      "at": "2026-10-14 13:36",
+      "summary": "listed documents"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM",
+        "P201.SPEED",
+        "P201.FLOW"
+       ],
+       "hours": 48,
+       "step_min": 60
+      },
+      "at": "2026-10-14 13:36",
+      "summary": "48 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM, P201.SPEED, P201.FLOW"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/troubleshooting"
+      },
+      "at": "2026-10-14 13:36",
+      "summary": "read manual/troubleshooting"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-14 13:36",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/tests"
+      },
+      "at": "2026-10-14 13:36",
+      "summary": "read manual/tests"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/thermal"
+      },
+      "at": "2026-10-14 13:36",
+      "summary": "read manual/thermal"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/instrumentation"
+      },
+      "at": "2026-10-14 13:36",
+      "summary": "read manual/instrumentation"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "kb/p201-family"
+      },
+      "at": "2026-10-14 13:36",
+      "summary": "read kb/p201-family"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/specs"
+      },
+      "at": "2026-10-14 13:36",
+      "summary": "read manual/specs"
+     },
+     {
+      "tool": "request_inspection",
+      "args": {
+       "component": "thrust_bearing"
+      },
+      "at": "2026-10-14 21:36",
+      "summary": "{'ir_housing_C': 63.5, 'rtd_reading_C': 77.4, 'vibration': 'normal', 'note': 'IR on housing reads ~2 C below the bearing (+/- 1 C).', 'completed_at': '2026-10-14 21:36'}"
+     },
+     {
+      "tool": "submit_work_order",
+      "args": {
+       "action": "replace_rtd",
+       "diagnosis": "Dérive de la sonde RTD du palier de butée (P201.TT_THRUST). La température réelle du palier est d environ 65,5 C (IR boîtier 63,5 C + 2 C, ±1 C), dans la norme (ambiante + 44 C), alors que la sonde lit 77,4 C à 21:36. Vibrations normales. Huile (TT_OIL) et palier radial (TT_RADIAL) normaux par rapport à l ambiante (ambiante 20 C). Boîte de jonction RTD humide signalée au journal du 12 août 2026 (presse-étoupe resserré, à surveiller)."
+      },
+      "at": "2026-10-14 21:36",
+      "summary": "correct=True"
+     }
+    ],
+    "action": "replace_rtd",
+    "total_cost_cad": 4500
+   },
+   "sonnet": {
+    "model_id": "claude-sonnet-5-5",
+    "calls": [
+     {
+      "tool": "get_alarm",
+      "args": {},
+      "at": "2026-10-14 13:36",
+      "summary": "Alarm Tt 72.6 C at 2026-10-14 13:36"
+     },
+     {
+      "tool": "list_tags",
+      "args": {},
+      "at": "2026-10-14 13:36",
+      "summary": "listed tags"
+     },
+     {
+      "tool": "list_documents",
+      "args": {},
+      "at": "2026-10-14 13:36",
+      "summary": "listed documents"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/specs"
+      },
+      "at": "2026-10-14 13:36",
+      "summary": "read manual/specs"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/thermal"
+      },
+      "at": "2026-10-14 13:36",
+      "summary": "read manual/thermal"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/troubleshooting"
+      },
+      "at": "2026-10-14 13:36",
+      "summary": "read manual/troubleshooting"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/tests"
+      },
+      "at": "2026-10-14 13:36",
+      "summary": "read manual/tests"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "manual/instrumentation"
+      },
+      "at": "2026-10-14 13:36",
+      "summary": "read manual/instrumentation"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "kb/p201-family"
+      },
+      "at": "2026-10-14 13:36",
+      "summary": "read kb/p201-family"
+     },
+     {
+      "tool": "read_document",
+      "args": {
+       "doc_id": "log/P-201"
+      },
+      "at": "2026-10-14 13:36",
+      "summary": "read maintenance log"
+     },
+     {
+      "tool": "get_telemetry",
+      "args": {
+       "tags": [
+        "P201.TT_THRUST",
+        "P201.TT_RADIAL",
+        "P201.TT_OIL",
+        "P201.TT_ROOM",
+        "P201.SPEED",
+        "P201.FLOW"
+       ],
+       "hours": 48,
+       "step_min": 60
+      },
+      "at": "2026-10-14 13:36",
+      "summary": "48 rows of P201.TT_THRUST, P201.TT_RADIAL, P201.TT_OIL, P201.TT_ROOM, P201.SPEED, P201.FLOW"
+     },
+     {
+      "tool": "request_inspection",
+      "args": {
+       "component": "rtd_loop"
+      },
+      "at": "2026-10-14 21:36",
+      "summary": "{'rtd_minus_reference_C': 10.8, 'note': 'loop check against reference probe, +/- 0.4 C', 'completed_at': '2026-10-14 21:36'}"
+     },
+     {
+      "tool": "submit_work_order",
+      "args": {
+       "action": "replace_rtd",
+       "diagnosis": "Derive de la sonde RTD de la butee (P201.TT_THRUST), probablement liee a l humidite dans la boite de jonction signalee le 2026-08-12. Verification par boucle RTD: la sonde lit 10,8 C de plus que la sonde de reference (+/- 0,4 C). Temperatures ambiante, huile et palier radial normales: pas de defaut ambiant, de refroidisseur ni de roulement."
+      },
+      "at": "2026-10-14 21:36",
+      "summary": "correct=True"
+     }
+    ],
+    "action": "replace_rtd",
+    "total_cost_cad": 4500
+   }
+  }
+ }
+}

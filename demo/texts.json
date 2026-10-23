@@ -1,0 +1,15 @@
+{
+  "showcase": {
+    "intro": "Alarme 5001, la première du lecteur ci-dessus. La butée est à 54 °C au-dessus du local, contre 44 °C en temps normal, et l'huile vient de monter de 9 °C en quatre heures. La cause réelle est une usure du roulement ; la montée d'huile vient d'une baisse passagère de l'eau de refroidissement, que l'historien ne mesure pas. Claude Haiku a lancé un palier de vitesse : la butée a baissé de 6,9 °C, contre 6,6 °C prévus pour un roulement usé et 5,5 °C pour une sonde décalée.",
+    "other": "Sur la même alarme, Claude Sonnet a suivi la montée d'huile. Il a demandé une inspection du refroidisseur ; le technicien a signalé de l'encrassement, un faux positif dont le manuel ne donne pas le taux, et Sonnet a fait nettoyer le refroidisseur. Son rapport mentionne une dérive de la butée qu'il n'explique pas et qu'il n'a pas testée. Le roulement usé est resté en place, pour un coût total de 270 k$.",
+    "wo_time": "2026-10-16 11:29",
+    "wo_priority": "arrêt planifié",
+    "wo_diag": "Dégradation progressive du roulement de butée (frottement accru). Écart butée-local passé de 45 à 54 °C en 48 h. Palier de vitesse à 90 % pendant 45 min : chute de 6,9 °C, au-dessus de la réponse nominale (environ 6 °C), donc frottement accru et non dérive de sonde.",
+    "wo_text": "Remplacer le roulement de butée du P-201 au premier arrêt planifié possible. Le test de vitesse a donné une chute de Tt de 6,9 °C, supérieure à la réponse nominale, ce qui indique un frottement accru et non une sonde défectueuse. Pendant cet arrêt, vérifier aussi le refroidisseur de lubrification et la sonde RTD du palier, et entre-temps surveiller Tt (limite de déclenchement 97 °C)."
+  },
+  "llm_text": {
+    "intro": "Huit alarmes tirées au hasard, une exécution chacune, données à deux modèles Claude sans ajustement ni exemple : un petit modèle (Haiku) et un modèle moyen (Sonnet). Ils n'ont accès qu'aux outils du banc d'essai, pas au code ni à la cause. La dernière colonne donne la politique VOI sur les mêmes alarmes.",
+    "take": "Les deux modèles lisent correctement les sources : ils reconnaissent un local trop chaud aux écarts avec l'ambiante, citent le manuel et les cas de la base de connaissances, et rédigent des bons de travail clairs. Ils se trompent sur le choix du test. Sur les 12 décisions où il fallait séparer usure et dérive de sonde, ils ont lancé le palier de vitesse 4 fois. Les 8 autres fois, ils ont payé un technicien et huit heures d'attente ; quand ils justifient ce choix, c'est que l'écart attendu entre les deux causes, environ 1 °C, leur semble trop mince. Avec une sonde à ±0,25 °C et des moyennes sur 5 minutes, cet écart suffit à trancher. Sur ces huit alarmes, la lecture des documents n'est pas ce qui limite les modèles ; c'est l'estimation de ce qu'un test va révéler avant de le payer.",
+    "foot": "Traces des agents LLM : Claude Haiku et Claude Sonnet, sans ajustement ni exemple, avec les seuls outils du banc d'essai. Accents rétablis dans les textes cités."
+  }
+}

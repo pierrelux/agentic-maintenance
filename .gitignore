@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.pyc
+episodes/
+results/transcripts_raw/
+demo/p201.html
